@@ -9,6 +9,15 @@
 
 VoiceNotes is a complete voice note management platform consisting of a cross-platform mobile application and a cloud-based API backend. The platform enables users to record, manage, and automatically transcribe voice notes using advanced AI technology powered by AssemblyAI. Built with modern technologies and best practices, VoiceNotes provides a seamless experience from recording to AI-powered content analysis.
 
+## 🔗 Related Projects
+
+This repository contains the **Mobile Application** (.NET MAUI). For the complete platform:
+
+- **📱 Mobile App** (this repository): [https://github.com/bestekarx/VoiceNotes](https://github.com/bestekarx/VoiceNotes)
+- **🚀 Backend API**: [https://github.com/bestekarx/VoiceNotesApi](https://github.com/bestekarx/VoiceNotesApi)
+
+> **Note**: Both repositories are required for full functionality. The mobile app handles local recording and storage, while the backend API provides AI transcription and summarization services.
+
 ## Platform Architecture
 
 ```
@@ -98,7 +107,7 @@ VoiceNotes Platform
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/VoiceNotes.git
+   git clone https://github.com/bestekarx/VoiceNotes.git
    cd VoiceNotes
    ```
 
