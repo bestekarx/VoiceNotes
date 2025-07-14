@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VoiceNotes.Views.NoteListPage"
+             xmlns:viewModels="clr-namespace:VoiceNotes.ViewModels"
+             xmlns:models="clr-namespace:VoiceNotes.Models"
+             Style="{StaticResource PageStyle}"
+             Title="Voice Notes">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh" Command="{Binding LoadNotesCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header Section -->
+        <Border Grid.Row="0" 
+                BackgroundColor="{StaticResource Surface}"
+                StrokeThickness="0"
+                Margin="0"
+                Padding="20,32,20,20">
+            <Border.Shadow>
+                <Shadow Brush="{StaticResource ShadowLight}" 
+                        Offset="0,2" 
+                        Opacity="0.1" 
+                        Radius="8" />
+            </Border.Shadow>
+            <StackLayout>
+                <Label Text="🎙️ VoiceNotes" 
+                       FontSize="28"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}"
+                       HorizontalOptions="Center" />
+                <Label Text="Capture your thoughts with intelligent summaries" 
+                       FontSize="14"
+                       TextColor="{StaticResource TextSecondary}"
+                       HorizontalOptions="Center"
+                       Margin="0,8,0,0" />
+            </StackLayout>
+        </Border>
+
+        <!-- Main Content -->
+        <RefreshView Grid.Row="1"
+                     Command="{Binding LoadNotesCommand}"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     RefreshColor="{StaticResource Primary}"
+                     BackgroundColor="{StaticResource Background}">
+            
+            <CollectionView ItemsSource="{Binding Notes}"
+                           Style="{StaticResource CollectionViewStyle}"
+                           BackgroundColor="Transparent"
+                           SelectionMode="Single"
+                           SelectionChanged="OnNoteSelected">
+                
+                <CollectionView.EmptyView>
+                    <Grid Padding="40">
+                        <Border BackgroundColor="{StaticResource SurfaceElevated}"
+                                StrokeThickness="1"
+                                Stroke="{StaticResource OutlineVariant}"
+                                Padding="32">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow Brush="{StaticResource ShadowLight}" 
+                                        Offset="0,4" 
+                                        Opacity="0.15" 
+                                        Radius="12" />
+                            </Border.Shadow>
+                            <StackLayout VerticalOptions="Center" 
+                                       HorizontalOptions="Center"
+                                       Spacing="20">
+                                <Label Text="🎙️" 
+                                       FontSize="72" 
+                                       HorizontalOptions="Center"
+                                       Opacity="0.7" />
+                                <Label Text="No voice notes yet" 
+                                       FontSize="22"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource TextPrimary}"
+                                       HorizontalOptions="Center" />
+                                <Label Text="Start recording your first note by tapping the + button below" 
+                                       FontSize="16"
+                                       TextColor="{StaticResource TextSecondary}"
+                                       HorizontalOptions="Center"
+                                       HorizontalTextAlignment="Center"
+                                       LineBreakMode="WordWrap" />
+                                <Border BackgroundColor="{StaticResource PrimaryContainer}"
+                                        StrokeThickness="0"
+                                        Padding="16,8"
+                                        Margin="0,8,0,0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="20" />
+                                    </Border.StrokeShape>
+                                    <Label Text="✨ AI-powered summaries coming soon!" 
+                                           FontSize="12"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource OnPrimaryContainer}"
+                                           HorizontalOptions="Center" />
+                                </Border>
+                            </StackLayout>
+                        </Border>
+                    </Grid>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Note">
+                        <Frame Style="{StaticResource CardStyle}" 
+                               Margin="16,8,16,8">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NoteListViewModel}}, Path=GoToNoteDetailCommand}"
+                                                    CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <!-- Note Title -->
+                                <Label Grid.Row="0" 
+                                       Text="{Binding Title}" 
+                                       Style="{StaticResource SubheaderTextStyle}"
+                                       LineBreakMode="TailTruncation"
+                                       MaxLines="2" />
+
+                                <!-- Note Date -->
+                                <Label Grid.Row="1" 
+                                       Text="{Binding Date, StringFormat='{0:MMM dd, yyyy - HH:mm}'}"
+                                       Style="{StaticResource CaptionTextStyle}"
+                                       Margin="0,4,0,0" />
+
+                                <!-- Audio Indicator -->
+                                <Border Grid.Row="2" 
+                                        Margin="0,8,0,0"
+                                        BackgroundColor="{StaticResource PrimaryContainer}"
+                                        StrokeThickness="0"
+                                        Padding="8,4">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Grid.Column="0" 
+                                               Text="🎵" 
+                                               FontSize="14" 
+                                               VerticalOptions="Center"
+                                               TextColor="{StaticResource OnPrimaryContainer}" />
+                                        
+                                        <Label Grid.Column="1" 
+                                               Text="Audio note available" 
+                                               FontSize="12"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource OnPrimaryContainer}"
+                                               VerticalOptions="Center"
+                                               Margin="6,0,0,0" />
+
+                                        <Label Grid.Column="2" 
+                                               Text="📊" 
+                                               FontSize="12" 
+                                               VerticalOptions="Center"
+                                               TextColor="{StaticResource OnPrimaryContainer}" />
+                                    </Grid>
+                                </Border>
+
+                                <!-- Action Buttons -->
+                                <Grid Grid.Row="3" 
+                                      Margin="0,12,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Delete Button -->
+                                    <Button Grid.Column="1" 
+                                            Text="🗑️" 
+                                            BackgroundColor="{StaticResource Error}"
+                                            TextColor="White"
+                                            HeightRequest="36"
+                                            WidthRequest="60"
+                                            CornerRadius="18"
+                                            FontSize="14"
+                                            x:Name="DeleteButton"
+                                            Clicked="OnDeleteButtonClicked" />
+                                </Grid>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+        <!-- Modern Floating Action Button -->
+        <Border Grid.Row="1"
+                BackgroundColor="{StaticResource Primary}"
+                VerticalOptions="End"
+                HorizontalOptions="End"
+                Margin="24"
+                HeightRequest="64"
+                WidthRequest="64">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="32" />
+            </Border.StrokeShape>
+            <Border.Shadow>
+                <Shadow Brush="{StaticResource Primary}" 
+                        Offset="0,8" 
+                        Opacity="0.25" 
+                        Radius="16" />
+            </Border.Shadow>
+            <Button Text="🎙️" 
+                    BackgroundColor="Transparent"
+                    TextColor="{StaticResource OnPrimary}"
+                    FontSize="24"
+                    Command="{Binding AddNoteCommand}"
+                    x:Name="FabButton"
+                    BorderWidth="0"
+                    CornerRadius="32" />
+        </Border>
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator Grid.Row="1" 
+                          IsVisible="{Binding IsBusy}"
+                          IsRunning="{Binding IsBusy}"
+                          Color="{StaticResource Primary}"
+                          VerticalOptions="Center"
+                          HorizontalOptions="Center" />
+    </Grid>
+</ContentPage>

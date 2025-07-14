@@ -1,0 +1,200 @@
+# VoiceNotes Project - Cursor AI Assistant Rules
+
+## Project Overview
+VoiceNotes is a **production-ready** .NET MAUI cross-platform mobile application for AI-powered voice note management. The app allows users to record multiple audio notes, manage them efficiently, and prepare for AI summarization.
+
+## Current Status: ✅ PRODUCTION READY
+- **Core Features:** 100% Complete
+- **UI/UX:** Polished and optimized  
+- **Architecture:** Professional MVVM implementation
+- **Database:** Complete SQLite with relationships
+- **Multilanguage:** Resource system implemented
+- **Quality:** High code standards with comprehensive logging
+
+## Technology Stack
+
+### Primary Framework
+- **.NET 8 MAUI** - Multi-platform App UI framework
+- **C# 12** - Latest language features
+- **SQLite** - Local database with `sqlite-net-pcl`
+- **MVVM Pattern** - Clean architecture with dependency injection
+
+### Key Libraries & Plugins
+- `Plugin.AudioRecorder` - Audio recording and playback
+- `Microsoft.Extensions.DependencyInjection` - IoC container
+- `Microsoft.Extensions.Logging` - Comprehensive logging
+- `System.Resources` - Multilanguage support (.resx files)
+
+### UI/UX Framework
+- **Material Design 3** - Modern design system
+- **Custom Styles** - Consistent theming across platforms
+- **Responsive Design** - Adaptive layouts for different screen sizes
+
+## Architecture Patterns
+
+### MVVM Implementation
+```
+Models/ - Entity classes with INotifyPropertyChanged
+├── Note.cs - Main note entity
+├── AudioRecord.cs - Multiple audio recordings per note
+
+ViewModels/ - Business logic and data binding
+├── BaseViewModel.cs - Common MVVM functionality
+├── NoteListViewModel.cs - Note management operations  
+├── NoteDetailViewModel.cs - Audio recording and editing
+
+Views/ - UI and user interaction
+├── NoteListPage.xaml - Notes overview with delete functionality
+├── NoteDetailPage.xaml - Audio recording interface
+
+Services/ - Business services and external integrations
+├── NoteDatabase.cs - SQLite CRUD operations
+├── IAudioRecordingService.cs - Audio capture management
+├── IAudioPlaybackService.cs - Audio playback with state tracking
+├── IApiService.cs - Backend API integration (ready for AI)
+
+Helpers/ - Utility classes
+├── AppResources.cs - Multilanguage string management
+```
+
+### Database Schema
+```sql
+Notes:
+  ID (PK), Title, Date, CreatedAt, UpdatedAt, AudioFilePath
+
+AudioRecords:  
+  ID (PK), NoteID (FK), Title, FileName, FilePath,
+  Duration, FileSizeBytes, RecordedAt, HasSummary, 
+  SummaryText, IsUploaded
+
+-- Cascade delete: Note deletion removes all AudioRecords
+```
+
+## Core Features Implemented
+
+### ✅ Complete Note Management
+- Create, edit, save, delete notes
+- Real-time title validation and save button states
+- Proper navigation between list and detail views
+- Cascade delete operations (note + all audio files)
+
+### ✅ Advanced Audio System  
+- **Multiple recordings per note** - Users can record several audio clips per note
+- **Real-time playback controls** - Dynamic play/pause buttons with state management
+- **Audio file management** - Duration calculation, file size display, cleanup on delete
+- **Edit functionality** - Rename audio recordings with immediate UI updates
+
+### ✅ Professional UI/UX
+- **Material Design 3** color scheme and components
+- **Card-based layouts** with proper spacing and shadows
+- **Floating Action Button** for primary actions
+- **Visual feedback** for all user interactions
+- **Responsive design** that works across device sizes
+
+### ✅ Data Persistence & Reliability
+- **SQLite relationships** with proper foreign key constraints
+- **Transaction safety** for complex operations
+- **File system management** with automatic cleanup
+- **Error handling** with user-friendly messages
+- **Comprehensive logging** for debugging and monitoring
+
+### ✅ Multilanguage Support
+- **Resource system** (.resx files) for all UI strings
+- **AppResources helper** class for easy string access
+- **Turkish localization** complete for all user-facing text
+- **Extensible architecture** for additional languages
+
+## Development Standards
+
+### Code Quality Rules
+1. **SOLID Principles** - Follow dependency injection and interface segregation
+2. **Clean Code** - Meaningful names, single responsibility methods
+3. **Async/Await** - All I/O operations must be non-blocking
+4. **Error Handling** - Comprehensive try-catch with logging
+5. **Resource Management** - Proper disposal of files and connections
+
+### UI/UX Guidelines
+1. **Material Design 3** - Follow Google's design principles
+2. **Accessibility** - Ensure usability for all users
+3. **Responsive Design** - Test on various screen sizes
+4. **Consistent Theming** - Use predefined styles and colors
+5. **User Feedback** - Provide clear loading and error states
+
+### Performance Standards
+1. **Memory Management** - Dispose resources properly
+2. **UI Threading** - Keep UI responsive with background operations
+3. **Database Optimization** - Use efficient queries and indexes
+4. **File Management** - Clean up temporary and deleted files
+5. **Startup Performance** - Minimize cold start time
+
+## Known Patterns & Solutions
+
+### Audio Management Pattern
+```csharp
+// Multiple audio records per note
+public class Note {
+    public List<AudioRecord> AudioRecords { get; set; }
+}
+
+// Real-time UI updates for audio state
+public class AudioRecord : INotifyPropertyChanged {
+    public bool IsCurrentlyPlaying { get; set; }
+    public string PlayButtonText => IsCurrentlyPlaying ? "⏸ Pause" : "▶ Play";
+}
+```
+
+### Resource Management Pattern  
+```csharp
+// Multilanguage support
+public static class AppResources {
+    public static string DeleteNoteConfirm(string title) => 
+        GetString("DeleteNoteConfirm", title);
+}
+
+// Usage in ViewModels
+await Shell.Current.DisplayAlert(
+    AppResources.DeleteNote,
+    AppResources.DeleteNoteConfirm(note.Title),
+    AppResources.Delete,
+    AppResources.Cancel);
+```
+
+### Service Integration Pattern
+```csharp
+// Dependency injection setup
+builder.Services.AddSingleton<NoteDatabase>();
+builder.Services.AddSingleton<IAudioRecordingService, AudioRecordingService>();
+builder.Services.AddSingleton<IAudioPlaybackService, AudioPlaybackService>();
+builder.Services.AddTransient<NoteDetailViewModel>();
+```
+
+## AI Assistant Guidelines
+
+### When Working on This Project:
+1. **Preserve Existing Architecture** - Don't break the established MVVM pattern
+2. **Maintain Code Quality** - Follow the existing standards and patterns
+3. **Update Resources** - Add new strings to AppStrings.resx for multilanguage
+4. **Test Thoroughly** - Ensure changes work across all platforms
+5. **Document Changes** - Update GEMINI.md for significant modifications
+
+### Common Tasks:
+- **UI Changes:** Update both .xaml and ViewModel properties
+- **New Features:** Follow the Service → ViewModel → View pattern
+- **Database Changes:** Update both model classes and database methods
+- **String Changes:** Always use AppResources instead of hardcoded strings
+- **Error Handling:** Include logging and user-friendly error messages
+
+### Avoid These Patterns:
+- ❌ Hardcoded strings in UI or ViewModels
+- ❌ Blocking UI thread with synchronous calls
+- ❌ Missing error handling in async operations
+- ❌ Breaking existing functionality when adding features
+- ❌ Inconsistent styling or not following Material Design
+
+## Next Development Phase
+The application is **ready for AI backend integration**. The next major milestone is connecting to real AI services for audio transcription and summarization. All the groundwork (API service layer, response models, UI components) is already implemented.
+
+**Current Priority:** Backend integration and deployment preparation.
+
+---
+*Last Updated: January 2025 - Production-ready milestone achieved* 

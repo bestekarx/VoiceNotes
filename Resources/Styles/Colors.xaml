@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Modern VoiceNotes Color Scheme - Inspired by Notion & Bear -->
+    
+    <!-- Primary Brand Colors -->
+    <Color x:Key="Primary">#5B47C7</Color>          <!-- Deep Purple - Professional & Modern -->
+    <Color x:Key="OnPrimary">#FFFFFF</Color>
+    <Color x:Key="PrimaryContainer">#E8E2FF</Color>  <!-- Light Purple -->
+    <Color x:Key="OnPrimaryContainer">#1A0D4A</Color>
+    
+    <!-- Secondary Accent Colors -->
+    <Color x:Key="Secondary">#2D7D58</Color>         <!-- Forest Green - Calm & Natural -->
+    <Color x:Key="OnSecondary">#FFFFFF</Color>
+    <Color x:Key="SecondaryContainer">#E6F7F0</Color>
+    <Color x:Key="OnSecondaryContainer">#0A2418</Color>
+    
+    <!-- Tertiary Warm Accent -->
+    <Color x:Key="Tertiary">#E67E22</Color>          <!-- Warm Orange - Energy & Creativity -->
+    <Color x:Key="OnTertiary">#FFFFFF</Color>
+    <Color x:Key="TertiaryContainer">#FFF4E6</Color>
+    <Color x:Key="OnTertiaryContainer">#4A2C0A</Color>
+    
+    <!-- Status Colors -->
+    <Color x:Key="Error">#E74C3C</Color>             <!-- Modern Red -->
+    <Color x:Key="OnError">#FFFFFF</Color>
+    <Color x:Key="ErrorContainer">#FDEDEC</Color>
+    <Color x:Key="OnErrorContainer">#4A0E0A</Color>
+    
+    <Color x:Key="Success">#27AE60</Color>           <!-- Success Green -->
+    <Color x:Key="OnSuccess">#FFFFFF</Color>
+    <Color x:Key="SuccessContainer">#E8F8F0</Color>
+    <Color x:Key="OnSuccessContainer">#0A2F18</Color>
+    
+    <Color x:Key="Warning">#F39C12</Color>          <!-- Warning Orange -->
+    <Color x:Key="OnWarning">#FFFFFF</Color>
+    <Color x:Key="WarningContainer">#FEF9E7</Color>
+    <Color x:Key="OnWarningContainer">#4D3409</Color>
+    
+    <!-- Surface & Background Colors -->
+    <Color x:Key="Background">#FAFBFC</Color>        <!-- Soft White -->
+    <Color x:Key="OnBackground">#1A1D23</Color>      <!-- Near Black -->
+    <Color x:Key="Surface">#FFFFFF</Color>           <!-- Pure White -->
+    <Color x:Key="OnSurface">#1A1D23</Color>
+    
+    <Color x:Key="SurfaceVariant">#F5F6F8</Color>    <!-- Light Gray -->
+    <Color x:Key="OnSurfaceVariant">#4A5568</Color>  <!-- Medium Gray -->
+    <Color x:Key="Outline">#A0AEC0</Color>           <!-- Border Gray -->
+    <Color x:Key="OutlineVariant">#E2E8F0</Color>    <!-- Light Border -->
+    
+    <!-- Advanced Surface Colors -->
+    <Color x:Key="SurfaceElevated">#FFFFFF</Color>   <!-- Cards & Elevated Surfaces -->
+    <Color x:Key="SurfaceDim">#F1F3F6</Color>        <!-- Subtle Background -->
+    <Color x:Key="SurfaceBright">#FFFFFF</Color>     <!-- Bright Surface -->
+    
+    <!-- Shadows & Effects -->
+    <Color x:Key="Shadow">#1A1D23</Color>
+    <Color x:Key="ShadowLight">#E2E8F0</Color>       <!-- Light Shadow -->
+    <Color x:Key="Scrim">#000000</Color>
+    <Color x:Key="InverseSurface">#2D3748</Color>
+    <Color x:Key="InverseOnSurface">#F7FAFC</Color>
+    <Color x:Key="InversePrimary">#B8A9FF</Color>
+    
+    <!-- VoiceNotes Specific Colors -->
+    <Color x:Key="RecordingRed">#E53E3E</Color>      <!-- Modern Recording Red -->
+    <Color x:Key="RecordingRedLight">#FED7D7</Color>
+    <Color x:Key="PlayingGreen">#38A169</Color>      <!-- Modern Playing Green -->
+    <Color x:Key="PlayingGreenLight">#C6F6D5</Color>
+    <Color x:Key="PausedOrange">#ED8936</Color>      <!-- Paused State -->
+    <Color x:Key="PausedOrangeLight">#FEEBC8</Color>
+    
+    <!-- Neutral Grays (Modern Scale) -->
+    <Color x:Key="NeutralGray">#718096</Color>       <!-- Modern Gray -->
+    <Color x:Key="NeutralGrayLight">#F7FAFC</Color>
+    <Color x:Key="NeutralGrayDark">#2D3748</Color>
+    
+    <!-- Audio Visualization Colors -->
+    <Color x:Key="AudioWave">#5B47C7</Color>         <!-- Audio Wave Visualization -->
+    <Color x:Key="AudioWaveBackground">#E8E2FF</Color>
+    <Color x:Key="AudioProgress">#2D7D58</Color>     <!-- Progress Indicator -->
+    
+    <!-- Card & Component Colors -->
+    <Color x:Key="CardBackground">#FFFFFF</Color>
+    <Color x:Key="CardBorder">#E2E8F0</Color>
+    <Color x:Key="CardShadow">#E2E8F0</Color>
+    
+    <!-- Text Colors (Improved Hierarchy) -->
+    <Color x:Key="TextPrimary">#1A1D23</Color>       <!-- Main Text -->
+    <Color x:Key="TextSecondary">#4A5568</Color>     <!-- Secondary Text -->
+    <Color x:Key="TextTertiary">#718096</Color>      <!-- Tertiary Text -->
+    <Color x:Key="TextDisabled">#A0AEC0</Color>      <!-- Disabled Text -->
+    
+    <!-- Gradient Support Colors -->
+    <Color x:Key="GradientStart">#5B47C7</Color>     <!-- Primary Gradient Start -->
+    <Color x:Key="GradientEnd">#7B68EE</Color>       <!-- Primary Gradient End -->
+    <Color x:Key="GradientAccent">#2D7D58</Color>    <!-- Secondary Gradient -->
+    
+    <!-- Legacy Colors (Backward Compatibility) -->
+    <Color x:Key="White">White</Color>
+    <Color x:Key="Black">Black</Color>
+    <Color x:Key="Gray100">#F7FAFC</Color>
+    <Color x:Key="Gray200">#EDF2F7</Color>
+    <Color x:Key="Gray300">#E2E8F0</Color>
+    <Color x:Key="Gray400">#CBD5E0</Color>
+    <Color x:Key="Gray500">#A0AEC0</Color>
+    <Color x:Key="Gray600">#718096</Color>
+    <Color x:Key="Gray700">#4A5568</Color>
+    <Color x:Key="Gray800">#2D3748</Color>
+    <Color x:Key="Gray900">#1A202C</Color>
+    <Color x:Key="Gray950">#0F0F0F</Color>
+    
+</ResourceDictionary>

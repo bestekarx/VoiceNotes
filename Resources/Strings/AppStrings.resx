@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- App General -->
+  <data name="AppTitle" xml:space="preserve">
+    <value>Voice Notes</value>
+  </data>
+  <data name="VoiceNotes" xml:space="preserve">
+    <value>Ses Notları</value>
+  </data>
+  <data name="TapToRecord" xml:space="preserve">
+    <value>Düşüncelerinizi kaydetmek için dokunun</value>
+  </data>
+  
+  <!-- Buttons -->
+  <data name="Save" xml:space="preserve">
+    <value>Kaydet</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Sil</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Düzenle</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>İptal</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>Tamam</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Yenile</value>
+  </data>
+  
+  <!-- Messages -->
+  <data name="Success" xml:space="preserve">
+    <value>Başarılı</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Hata</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Uyarı</value>
+  </data>
+  
+  <!-- Note Operations -->
+  <data name="DeleteNote" xml:space="preserve">
+    <value>Not Sil</value>
+  </data>
+  <data name="DeleteNoteConfirm" xml:space="preserve">
+    <value>'{0}' notunu silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</value>
+  </data>
+  <data name="NoteDeletedSuccess" xml:space="preserve">
+    <value>Not başarıyla silindi.</value>
+  </data>
+  <data name="NoteSavedSuccess" xml:space="preserve">
+    <value>Not başarıyla kaydedildi.</value>
+  </data>
+  <data name="DeleteNoteError" xml:space="preserve">
+    <value>Not silinirken bir hata oluştu. Lütfen tekrar deneyin.</value>
+  </data>
+  <data name="SaveNoteError" xml:space="preserve">
+    <value>Not kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.</value>
+  </data>
+  <data name="NoteNotFound" xml:space="preserve">
+    <value>Not bulunamadı</value>
+  </data>
+  <data name="EnterNoteTitle" xml:space="preserve">
+    <value>Lütfen not başlığı girin</value>
+  </data>
+  <data name="NoteTitlePlaceholder" xml:space="preserve">
+    <value>Not başlığınızı buraya girin...</value>
+  </data>
+  
+  <!-- Audio Operations -->
+  <data name="DeleteRecording" xml:space="preserve">
+    <value>Kaydı Sil</value>
+  </data>
+  <data name="DeleteRecordingConfirm" xml:space="preserve">
+    <value>'{0}' kaydını silmek istediğinizden emin misiniz?</value>
+  </data>
+  <data name="EditRecordingTitle" xml:space="preserve">
+    <value>Kayıt Başlığını Düzenle</value>
+  </data>
+  <data name="EnterNewTitle" xml:space="preserve">
+    <value>Yeni başlık girin:</value>
+  </data>
+  <data name="AudioFileNotFound" xml:space="preserve">
+    <value>Ses dosyası bulunamadı</value>
+  </data>
+  <data name="PlayAudioError" xml:space="preserve">
+    <value>Ses çalınamadı</value>
+  </data>
+  <data name="RecordingError" xml:space="preserve">
+    <value>Kayıt başarısız. Lütfen tekrar deneyin.</value>
+  </data>
+  <data name="MicrophonePermissionError" xml:space="preserve">
+    <value>Kayıt başlatılamadı. Lütfen mikrofon izinlerini kontrol edin.</value>
+  </data>
+  <data name="AudioNoteAvailable" xml:space="preserve">
+    <value>Audio note available</value>
+  </data>
+  <data name="ReadyToRecord" xml:space="preserve">
+    <value>Kayda hazır</value>
+  </data>
+  <data name="Recording" xml:space="preserve">
+    <value>Kaydediliyor...</value>
+  </data>
+  <data name="RecordingSaved" xml:space="preserve">
+    <value>Kayıt başarıyla kaydedildi</value>
+  </data>
+  <data name="FailedToStartRecording" xml:space="preserve">
+    <value>Kayıt başlatılamadı</value>
+  </data>
+  
+  <!-- AI Operations -->
+  <data name="AISummary" xml:space="preserve">
+    <value>AI Özeti</value>
+  </data>
+  <data name="SummarizeAudio" xml:space="preserve">
+    <value>Özetle</value>
+  </data>
+  <data name="SummarizationError" xml:space="preserve">
+    <value>Ses özetlenemedi: {0}</value>
+  </data>
+  <data name="SummarizationFailed" xml:space="preserve">
+    <value>Ses özetleme başarısız. Lütfen tekrar deneyin.</value>
+  </data>
+  
+  <!-- Empty States -->
+  <data name="NoNotesYet" xml:space="preserve">
+    <value>Henüz not yok</value>
+  </data>
+  <data name="CreateFirstNote" xml:space="preserve">
+    <value>İlk ses notunuzu oluşturmak için + butonuna dokunun</value>
+  </data>
+  <data name="NoRecordingsYet" xml:space="preserve">
+    <value>Henüz kayıt yok</value>
+  </data>
+  <data name="StartRecording" xml:space="preserve">
+    <value>İlk kaydınızı yapmak için mikrofon butonuna dokunun</value>
+  </data>
+  
+  <!-- Labels -->
+  <data name="NoteTitle" xml:space="preserve">
+    <value>Not Başlığı</value>
+  </data>
+  <data name="AudioRecordings" xml:space="preserve">
+    <value>Ses Kayıtları</value>
+  </data>
+  <data name="RecordingsCount" xml:space="preserve">
+    <value>{0} kayıt</value>
+  </data>
+</root> 

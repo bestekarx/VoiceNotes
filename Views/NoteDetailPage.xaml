@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VoiceNotes.Views.NoteDetailPage"
+             xmlns:viewModels="clr-namespace:VoiceNotes.ViewModels"
+             xmlns:models="clr-namespace:VoiceNotes.Models"
+             xmlns:helpers="clr-namespace:VoiceNotes.Helpers"
+             Style="{StaticResource PageStyle}"
+             Title="Note Detail">
+
+    <!-- Toolbar kaldırıldı -->
+
+    <ScrollView>
+        <VerticalStackLayout Style="{StaticResource MainContainerStyle}">
+            
+            <!-- Note Title Section -->
+            <Frame Style="{StaticResource ElevatedCardStyle}" Margin="0,8,0,16">
+                <VerticalStackLayout Spacing="12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <Label Grid.Column="0" 
+                               Text="📝" 
+                               FontSize="20" 
+                               VerticalOptions="Center"
+                               Margin="0,0,12,0" />
+                        
+                        <Label Grid.Column="1" 
+                               Text="Note Title" 
+                               Style="{StaticResource SubheaderTextStyle}" 
+                               VerticalOptions="Center" />
+                    </Grid>
+                    
+                    <Frame BackgroundColor="{StaticResource SurfaceVariant}"
+                           BorderColor="Transparent"
+                           CornerRadius="12"
+                           Padding="16,12"
+                           HasShadow="False">
+                        <Entry Placeholder="Enter your note title here..." 
+                               Text="{Binding Title}" 
+                               FontSize="16"
+                               FontFamily="OpenSansRegular"
+                               TextColor="{StaticResource OnSurface}"
+                               PlaceholderColor="{StaticResource OnSurfaceVariant}"
+                               BackgroundColor="Transparent"
+                               ReturnType="Done"
+                               ClearButtonVisibility="WhileEditing" />
+                    </Frame>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Recording Section -->
+            <Frame Style="{StaticResource ElevatedCardStyle}" Margin="0,8,0,16">
+                <VerticalStackLayout Spacing="24">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <Label Grid.Column="0" 
+                               Text="🎙️" 
+                               FontSize="20" 
+                               VerticalOptions="Center"
+                               Margin="0,0,12,0" />
+                        
+                        <Label Grid.Column="1" 
+                               Text="Voice Recordings" 
+                               Style="{StaticResource SubheaderTextStyle}" 
+                               VerticalOptions="Center" />
+                    </Grid>
+
+                    <!-- Recording Status -->
+                    <Label Text="{Binding RecordingStatus}" 
+                           Style="{StaticResource BodyTextStyle}" 
+                           HorizontalOptions="Center"
+                           TextColor="{Binding RecordingStatusColor}" />
+
+                    <!-- Recording Visual Indicator -->
+                    <Grid HeightRequest="80" Margin="0,8,0,8">
+                        <Ellipse Fill="{StaticResource RecordingRedLight}" 
+                                 WidthRequest="80" 
+                                 HeightRequest="80"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 IsVisible="{Binding IsRecording}" />
+                        
+                        <Label Text="🎤" 
+                               FontSize="32" 
+                               HorizontalOptions="Center" 
+                               VerticalOptions="Center"
+                               IsVisible="{Binding IsRecording}" />
+                        
+                        <Label Text="📱" 
+                               FontSize="32" 
+                               HorizontalOptions="Center" 
+                               VerticalOptions="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsRecording}" Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </Grid>
+
+                    <!-- Record Button (Center Only) -->
+                    <Button Text="{Binding RecordButtonText}" 
+                            Style="{StaticResource RecordButtonStyle}"
+                            Command="{Binding RecordCommand}"
+                            BackgroundColor="{Binding RecordButtonColor}"
+                            HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Audio Recordings List -->
+            <Frame Style="{StaticResource ElevatedCardStyle}" 
+                   Margin="0,8,0,16"
+                   IsVisible="True">
+                <VerticalStackLayout Spacing="16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <Label Grid.Column="0" 
+                               Text="🎵" 
+                               FontSize="18" 
+                               VerticalOptions="Center"
+                               Margin="0,0,8,0" />
+                        
+                        <Label Grid.Column="1" 
+                               Text="Recordings" 
+                               Style="{StaticResource SubheaderTextStyle}" 
+                               VerticalOptions="Center" />
+                        
+                        <Label Grid.Column="2" 
+                               Text="{Binding AudioRecords.Count, StringFormat='DEBUG: {0} items', FallbackValue='0 items'}" 
+                               Style="{StaticResource CaptionTextStyle}" 
+                               VerticalOptions="Center" />
+                    </Grid>
+                    
+                    <!-- Debug Info -->
+                    <Label Text="{Binding HasAudioRecords, StringFormat='HasAudioRecords: {0}'}" 
+                           Style="{StaticResource CaptionTextStyle}" 
+                           TextColor="Red" />
+                    
+                    <!-- Audio Records Collection -->
+                    <CollectionView ItemsSource="{Binding AudioRecords}"
+                                   BackgroundColor="Transparent">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:AudioRecord">
+                                <SwipeView>
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="Delete" 
+                                                     BackgroundColor="{StaticResource Error}"
+                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NoteDetailViewModel}}, Path=DeleteAudioRecordCommand}"
+                                                     CommandParameter="{Binding .}" />
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+                                    <Frame Style="{StaticResource CardStyle}" 
+                                           Margin="0,4,0,4"
+                                           Padding="12">
+                                        <VerticalStackLayout Spacing="8">
+                                            <!-- Başlık ve ses bilgileri -->
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Text="{Binding Title}" Style="{StaticResource BodyTextStyle}" FontAttributes="Bold" LineBreakMode="TailTruncation" />
+                                                <Label Grid.Column="1" Text="{Binding FormattedDuration}" Style="{StaticResource CaptionTextStyle}" VerticalOptions="Center" />
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Text="{Binding FormattedRecordedAt}" Style="{StaticResource CaptionTextStyle}" />
+                                                <Label Grid.Column="1" Text="{Binding FormattedSize}" Style="{StaticResource CaptionTextStyle}" />
+                                            </Grid>
+                                            <!-- Oynat/Düzenle/AI Özeti/Sil butonları -->
+                                            <HorizontalStackLayout Spacing="8">
+                                                <Button Text="{Binding PlayButtonText}" 
+                                                        Style="{StaticResource PlayButtonStyle}" 
+                                                        HeightRequest="32" 
+                                                        FontSize="12" 
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NoteDetailViewModel}}, Path=PlayAudioRecordCommand}" 
+                                                        CommandParameter="{Binding .}" />
+                                                
+                                                <Button Text="📝" 
+                                                        BackgroundColor="{StaticResource Primary}" 
+                                                        TextColor="White" 
+                                                        HeightRequest="36" 
+                                                        WidthRequest="36" 
+                                                        CornerRadius="18" 
+                                                        FontSize="18" 
+                                                        Padding="0" 
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NoteDetailViewModel}}, Path=EditAudioRecordCommand}" 
+                                                        CommandParameter="{Binding .}" />
+
+                                                <Button Text="🤖" 
+                                                        BackgroundColor="{StaticResource Secondary}" 
+                                                        TextColor="White" 
+                                                        HeightRequest="36" 
+                                                        WidthRequest="36" 
+                                                        CornerRadius="18" 
+                                                        FontSize="18" 
+                                                        Padding="0"
+                                                        IsVisible="{Binding CanSummarize}"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NoteDetailViewModel}}, Path=SummarizeAudioCommand}" 
+                                                        CommandParameter="{Binding .}" />
+                                                        
+                                                <ActivityIndicator IsRunning="{Binding SummaryStatus, Converter={StaticResource StatusToLoadingConverter}}" 
+                                                                   IsVisible="{Binding SummaryStatus, Converter={StaticResource StatusToLoadingConverter}}"
+                                                                   Color="{StaticResource Primary}"
+                                                                   HeightRequest="24"
+                                                                   WidthRequest="24" />
+                                                
+                                                <Button Text="🗑️" 
+                                                        BackgroundColor="{StaticResource Error}" 
+                                                        TextColor="White" 
+                                                        HeightRequest="36" 
+                                                        WidthRequest="36" 
+                                                        CornerRadius="18" 
+                                                        FontSize="18" 
+                                                        Padding="0" 
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NoteDetailViewModel}}, Path=DeleteAudioRecordCommand}" 
+                                                        CommandParameter="{Binding .}" />
+                                            </HorizontalStackLayout>
+                                            <!-- Transcript (Orijinal Metin) Kartı -->
+                                            <Frame BackgroundColor="{StaticResource SurfaceVariant}" 
+                                                   BorderColor="Transparent" 
+                                                   CornerRadius="8" 
+                                                   Padding="12" 
+                                                   Margin="0,8,0,0" 
+                                                   HasShadow="False"
+                                                   IsVisible="{Binding TranscriptText, Converter={StaticResource StringNotEmptyConverter}}">
+                                                <VerticalStackLayout Spacing="8">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        
+                                                        <Label Grid.Column="0" 
+                                                               Text="🗣️" 
+                                                               FontSize="16" 
+                                                               VerticalOptions="Center" 
+                                                               Margin="0,0,8,0" />
+                                                               
+                                                        <Label Grid.Column="1" 
+                                                               Text="Speech-to-Text" 
+                                                               Style="{StaticResource CaptionTextStyle}" 
+                                                               FontAttributes="Bold" 
+                                                               VerticalOptions="Center" />
+                                                               
+                                                        <Label Grid.Column="2" 
+                                                               Text="{Binding TranscriptLanguageCode, Converter={StaticResource LanguageToFlagConverter}}" 
+                                                               FontSize="18" 
+                                                               VerticalOptions="Center" 
+                                                               Margin="8,0,8,0" 
+                                                               IsVisible="{Binding TranscriptLanguageCode, Converter={StaticResource StringNotEmptyConverter}}" />
+                                                               
+                                                        <Button Grid.Column="3"
+                                                                Text="{Binding IsSummaryExpanded, Converter={StaticResource ExpandButtonTextConverter}}"
+                                                                BackgroundColor="Transparent"
+                                                                TextColor="{StaticResource OnSurfaceVariant}"
+                                                                FontSize="12"
+                                                                Padding="4"
+                                                                HeightRequest="24"
+                                                                WidthRequest="24"
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NoteDetailViewModel}}, Path=ToggleSummaryExpandCommand}"
+                                                                CommandParameter="{Binding .}" />
+                                                    </Grid>
+                                                    
+                                                    <!-- Edit mode -->
+                                                    <Editor Text="{Binding TranscriptText, Mode=TwoWay}" 
+                                                            IsVisible="{Binding IsEditingTranscript}" 
+                                                            AutoSize="TextChanges"
+                                                            Placeholder="Transcript text..."
+                                                            BackgroundColor="White"
+                                                            TextColor="{StaticResource OnSurface}" />
+                                                    
+                                                    <!-- Display mode -->
+                                                    <Label Text="{Binding TranscriptText, Converter={StaticResource SummaryTruncateConverter}, ConverterParameter=300}" 
+                                                           Style="{StaticResource CaptionTextStyle}" 
+                                                           LineBreakMode="WordWrap" 
+                                                           MaxLines="{Binding IsSummaryExpanded, Converter={StaticResource BoolToMaxLinesConverter}}"
+                                                           IsVisible="{Binding IsEditingTranscript, Converter={StaticResource InverseBoolConverter}}" />
+                                                    
+                                                    <!-- Edit button -->
+                                                    <Button Text="{Binding IsEditingTranscript, Converter={StaticResource EditButtonTextConverter}}"
+                                                            BackgroundColor="{StaticResource Primary}"
+                                                            TextColor="White"
+                                                            FontSize="12"
+                                                            Padding="8,4"
+                                                            CornerRadius="12"
+                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NoteDetailViewModel}}, Path=EditTranscriptCommand}" 
+                                                            CommandParameter="{Binding .}" />
+                                                </VerticalStackLayout>
+                                            </Frame>
+                                            <!-- AI Özeti Kartı -->
+                                            <Frame BackgroundColor="{StaticResource PrimaryContainer}" 
+                                                   BorderColor="Transparent" 
+                                                   CornerRadius="8" 
+                                                   Padding="12" 
+                                                   Margin="0,8,0,0" 
+                                                   HasShadow="False"
+                                                   IsVisible="{Binding HasSummary}">
+                                                <VerticalStackLayout Spacing="8">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        
+                                                        <Label Grid.Column="0" 
+                                                               Text="🤖" 
+                                                               FontSize="16" 
+                                                               VerticalOptions="Center" 
+                                                               Margin="0,0,8,0" />
+                                                               
+                                                        <Label Grid.Column="1" 
+                                                               Text="AI Summary" 
+                                                               Style="{StaticResource CaptionTextStyle}" 
+                                                               FontAttributes="Bold" 
+                                                               VerticalOptions="Center" />
+                                                               
+                                                        <Label Grid.Column="2" 
+                                                               Text="{Binding SummaryLanguageCode, Converter={StaticResource LanguageToFlagConverter}}" 
+                                                               FontSize="18" 
+                                                               VerticalOptions="Center" 
+                                                               Margin="8,0,8,0" 
+                                                               IsVisible="{Binding SummaryLanguageCode, Converter={StaticResource StringNotEmptyConverter}}" />
+
+                                                        <Button Grid.Column="3"
+                                                                Text="🔄"
+                                                                BackgroundColor="Transparent"
+                                                                TextColor="{StaticResource OnPrimaryContainer}"
+                                                                FontSize="12"
+                                                                Padding="4"
+                                                                HeightRequest="24"
+                                                                WidthRequest="24"
+                                                                ToolTipProperties.Text="Re-summarize"
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NoteDetailViewModel}}, Path=ReSummarizeAudioCommand}"
+                                                                CommandParameter="{Binding .}" />
+                                                               
+                                                        <Button Grid.Column="4"
+                                                                Text="{Binding IsSummaryExpanded, Converter={StaticResource ExpandButtonTextConverter}}"
+                                                                BackgroundColor="Transparent"
+                                                                TextColor="{StaticResource OnPrimaryContainer}"
+                                                                FontSize="12"
+                                                                Padding="4"
+                                                                HeightRequest="24"
+                                                                WidthRequest="24"
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NoteDetailViewModel}}, Path=ToggleSummaryExpandCommand}"
+                                                                CommandParameter="{Binding .}" />
+                                                    </Grid>
+                                                    
+                                                    <!-- Edit mode -->
+                                                    <Editor Text="{Binding SummaryText, Mode=TwoWay}" 
+                                                            IsVisible="{Binding IsEditingSummary}" 
+                                                            AutoSize="TextChanges"
+                                                            Placeholder="AI summary text..."
+                                                            BackgroundColor="White"
+                                                            TextColor="{StaticResource OnSurface}" />
+                                                    
+                                                    <!-- Display mode -->
+                                                    <Label Text="{Binding SummaryText, Converter={StaticResource SummaryTruncateConverter}, ConverterParameter=300}" 
+                                                           Style="{StaticResource CaptionTextStyle}" 
+                                                           LineBreakMode="WordWrap" 
+                                                           MaxLines="{Binding IsSummaryExpanded, Converter={StaticResource BoolToMaxLinesConverter}}"
+                                                           IsVisible="{Binding IsEditingSummary, Converter={StaticResource InverseBoolConverter}}" />
+                                                    
+                                                    <!-- Status indicator -->
+                                                    <Label Text="{Binding SummaryStatus, Converter={StaticResource StatusToTextConverter}}"
+                                                           Style="{StaticResource CaptionTextStyle}"
+                                                           TextColor="{StaticResource OnPrimaryContainer}"
+                                                           FontAttributes="Italic"
+                                                           IsVisible="{Binding HasSummary, Converter={StaticResource InverseBoolConverter}}" />
+                                                    
+                                                    <!-- Edit button -->
+                                                    <Button Text="{Binding IsEditingSummary, Converter={StaticResource EditButtonTextConverter}}"
+                                                            BackgroundColor="{StaticResource Secondary}"
+                                                            TextColor="White"
+                                                            FontSize="12"
+                                                            Padding="8,4"
+                                                            CornerRadius="12"
+                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:NoteDetailViewModel}}, Path=EditSummaryCommand}" 
+                                                            CommandParameter="{Binding .}" />
+                                                </VerticalStackLayout>
+                                            </Frame>
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Action Buttons -->
+            <VerticalStackLayout Spacing="12" Margin="0,24,0,0">
+                <Button Text="Save Note" 
+                        Command="{Binding SaveNoteCommand}" 
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        IsEnabled="{Binding CanSave}" />
+
+                <Button Text="Delete Note" 
+                        Command="{Binding DeleteNoteCommand}" 
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        TextColor="{StaticResource Error}"
+                        BorderColor="{StaticResource Error}"
+                        IsEnabled="{Binding CanDelete}" />
+            </VerticalStackLayout>
+
+            <!-- Loading Indicator -->
+            <ActivityIndicator IsVisible="{Binding IsBusy}"
+                              IsRunning="{Binding IsBusy}"
+                              Color="{StaticResource Primary}"
+                              Margin="0,24,0,0" />
+        </VerticalStackLayout>
+    </ScrollView>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <helpers:StatusToBoolConverter x:Key="StatusToBoolConverter" />
+            <helpers:StatusToLoadingConverter x:Key="StatusToLoadingConverter" />
+            <helpers:StatusToTextConverter x:Key="StatusToTextConverter" />
+            <helpers:LanguageToFlagConverter x:Key="LanguageToFlagConverter" />
+            <helpers:StringNotEmptyConverter x:Key="StringNotEmptyConverter" />
+            <helpers:SummaryButtonVisibleConverter x:Key="SummaryButtonVisibleConverter" />
+            <helpers:SummaryTruncateConverter x:Key="SummaryTruncateConverter" />
+            <helpers:BoolToMaxLinesConverter x:Key="BoolToMaxLinesConverter" />
+            <helpers:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <helpers:ExpandButtonTextConverter x:Key="ExpandButtonTextConverter" />
+            <helpers:SummaryLongConverter x:Key="SummaryLongConverter" />
+            <helpers:EditButtonTextConverter x:Key="EditButtonTextConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+</ContentPage>
