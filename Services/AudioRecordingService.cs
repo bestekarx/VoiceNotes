@@ -9,12 +9,10 @@ namespace VoiceNotes.Services
         private bool _isRecording;
         private DateTime _recordingStartTime;
         private string _currentFilePath = string.Empty;
-        private int _currentNoteId;
         private Timer? _recordingTimer;
         
         // Security limits
         private static readonly TimeSpan MaxRecordingDuration = TimeSpan.FromHours(1); // 1 hour limit
-        private static readonly long MaxFileSizeBytes = 50 * 1024 * 1024; // 50MB limit
 
         public AudioRecordingService()
         {
@@ -26,7 +24,6 @@ namespace VoiceNotes.Services
         public TimeSpan RemainingTime => MaxRecordingDuration - CurrentRecordingDuration;
 
         public event EventHandler<bool>? RecordingStatusChanged;
-        public event EventHandler<double>? AudioLevelChanged;
         public event EventHandler<TimeSpan>? RecordingDurationChanged;
         public event EventHandler<string>? RecordingLimitReached;
 
@@ -219,4 +216,4 @@ namespace VoiceNotes.Services
             }
         }
     }
-} 
+}

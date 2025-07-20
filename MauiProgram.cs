@@ -5,6 +5,8 @@ using VoiceNotes.Views;
 using VoiceNotes.Services;
 using Refit;
 using System.Net.Http.Headers;
+using Syncfusion.Maui.Core.Hosting;
+using Syncfusion.Licensing;
 
 namespace VoiceNotes;
 
@@ -12,6 +14,9 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
+        // Syncfusion lisans anahtarını ayarla
+        SyncfusionLicenseProvider.RegisterLicense("Mzk1ODExOUAzMzMwMmUzMDJlMzAzYjMzMzAzYm4wSFNZa2lhU2VUSDJ6SUszVkVrU2gxME1rVHJWeVRFNHNKVXEvQXJUYzA9");
+
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
@@ -19,7 +24,8 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            });
+            })
+            .ConfigureSyncfusionCore(); // Syncfusion Core'u ekle
 
         // Database
         builder.Services.AddSingleton<NoteDatabase>(provider =>
@@ -31,6 +37,14 @@ public static class MauiProgram
         // Services
         builder.Services.AddSingleton<IAudioRecordingService, AudioRecordingService>();
         builder.Services.AddSingleton<IAudioPlaybackService, AudioPlaybackService>();
+        builder.Services.AddSingleton<IOnboardingService, OnboardingService>();
+        builder.Services.AddSingleton<IUserService, UserService>();
+        builder.Services.AddSingleton<IPermissionService, PermissionService>();
+        builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
+        builder.Services.AddSingleton<IPremiumService, PremiumService>();
+        builder.Services.AddSingleton<IUsageTrackingService, UsageTrackingService>();
+        builder.Services.AddSingleton<IInAppPurchaseService, InAppPurchaseService>();
+        
         // Backend API base URL (canlı Render sunucusu)
         var apiBaseUrl = "https://voicenotesapi.onrender.com";
 
@@ -39,19 +53,25 @@ public static class MauiProgram
             {
                 c.BaseAddress = new Uri(apiBaseUrl);
                 c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                // c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "<token>"); // Gerekirse
             });
         builder.Services.AddSingleton<IFileUploadService, FileUploadService>();
 
         // ViewModels
         builder.Services.AddTransient<NoteListViewModel>();
         builder.Services.AddTransient<NoteDetailViewModel>();
+        builder.Services.AddTransient<WelcomeViewModel>();
+        builder.Services.AddTransient<SettingsViewModel>();
 
         // Views
         builder.Services.AddTransient<NoteListPage>();
         builder.Services.AddTransient<NoteDetailPage>();
+        builder.Services.AddTransient<WelcomePage>();
+        builder.Services.AddTransient<SettingsPage>();
 
-        builder.Services.AddLogging(configure => configure.AddDebug());
+        builder.Services.AddLogging(configure => 
+        {
+            configure.AddDebug();
+        });
 
         return builder.Build();
     }

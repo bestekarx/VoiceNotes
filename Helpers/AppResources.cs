@@ -47,6 +47,9 @@ namespace VoiceNotes.Helpers
         public static string NoteNotFound => GetString("NoteNotFound");
         public static string EnterNoteTitle => GetString("EnterNoteTitle");
         public static string NoteTitlePlaceholder => GetString("NoteTitlePlaceholder");
+        public static string FailedToLoadNotes => GetString("FailedToLoadNotes");
+        public static string FailedToCreateNote => GetString("FailedToCreateNote");
+        public static string FailedToOpenNote => GetString("FailedToOpenNote");
 
         // Audio Operations
         public static string DeleteRecording => GetString("DeleteRecording");
@@ -79,5 +82,40 @@ namespace VoiceNotes.Helpers
         public static string NoteTitle => GetString("NoteTitle");
         public static string AudioRecordings => GetString("AudioRecordings");
         public static string RecordingsCount(int count) => GetString("RecordingsCount", count);
+        public static string Notes => GetString("Notes");
+
+        // Settings
+        public static string Settings => GetString("Settings");
+        public static string SettingsDescription => GetString("SettingsDescription");
+        public static string Language => GetString("Language");
+        public static string AudioSettings => GetString("AudioSettings");
+        public static string AudioQuality => GetString("AudioQuality");
+        public static string AutoSave => GetString("AutoSave");
+        public static string AISettings => GetString("AISettings");
+        public static string AutoSummarize => GetString("AutoSummarize");
+        public static string TranslationEnabled => GetString("TranslationEnabled");
+        public static string StorageSettings => GetString("StorageSettings");
+        public static string UsedSpace => GetString("UsedSpace");
+        public static string ClearCache => GetString("ClearCache");
+        public static string About => GetString("About");
+        public static string Version => GetString("Version");
+        public static string PrivacyPolicy => GetString("PrivacyPolicy");
+        public static string TermsOfService => GetString("TermsOfService");
+
+        // Welcome/Onboarding
+        public static string WelcomeToVoiceNotes => GetString("WelcomeToVoiceNotes");
+        public static string CaptureThoughts => GetString("CaptureThoughts");
+        public static string Slide1Title => GetString("Slide1Title");
+        public static string Slide1Subtitle => GetString("Slide1Subtitle");
+        public static string Slide1Description => GetString("Slide1Description");
+        public static string Slide2Title => GetString("Slide2Title");
+        public static string Slide2Subtitle => GetString("Slide2Subtitle");
+        public static string Slide2Description => GetString("Slide2Description");
+        public static string Slide3Title => GetString("Slide3Title");
+        public static string Slide3Subtitle => GetString("Slide3Subtitle");
+        public static string Slide3Description => GetString("Slide3Description");
+        public static string Slide4Title => GetString("Slide4Title");
+        public static string Slide4Subtitle => GetString("Slide4Subtitle");
+        public static string Slide4Description => GetString("Slide4Description");
     }
 } 

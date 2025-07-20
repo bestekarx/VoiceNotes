@@ -1,8 +1,3 @@
-# VoiceNotes Project - Cursor AI Assistant Rules
-
-## Project Overview
-VoiceNotes is a **production-ready** .NET MAUI cross-platform mobile application for AI-powered voice note management. The app allows users to record multiple audio notes, manage them efficiently, and prepare for AI summarization.
-
 ---
 description: Do not ask unnecessary questions
 alwaysApply: true
@@ -11,6 +6,13 @@ alwaysApply: true
 - Do not ask if you should continue. Proceed directly with your suggestions.
 - Avoid asking the user if they want you to do something. Assume you should unless told otherwise.
 - Be proactive and concise.
+
+
+
+# VoiceNotes Project - Cursor AI Assistant Rules
+
+## Project Overview
+VoiceNotes is a **production-ready** .NET MAUI cross-platform mobile application for AI-powered voice note management. The app allows users to record multiple audio notes, manage them efficiently, and prepare for AI summarization.
 
 ## 🎯 CURRENT STATUS: ✅ PRODUCTION READY - STORE PREPARATION PHASE
 - **Core Features:** 100% Complete

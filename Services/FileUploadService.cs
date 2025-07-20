@@ -1,6 +1,7 @@
 using Refit;
 using VoiceNotes.Models;
 using VoiceNotes.Data;
+using VoiceNotes.Helpers;
 
 namespace VoiceNotes.Services
 {
@@ -38,7 +39,7 @@ namespace VoiceNotes.Services
             }
             catch (Exception ex)
             {
-                // TODO: Logging
+                VoiceCrashLogger.LogError(ex, "FileUploadService.UploadAudioRecordAsync");
                 return false;
             }
         }
@@ -65,7 +66,7 @@ namespace VoiceNotes.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Get Unuploaded Error: {ex.Message}");
+                VoiceCrashLogger.LogError(ex, "FileUploadService.GetUnuploadedAudioRecordsAsync");
                 return new List<AudioRecord>();
             }
         }

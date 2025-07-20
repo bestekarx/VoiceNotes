@@ -48,11 +48,11 @@ public partial class NoteDetailPage : ContentPage, IQueryAttributable
 
 public class ExpandCollapseConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return (value is bool b && b) ? "▲ Özeti Gizle" : "▼ Özeti Göster";
     }
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotImplementedException();
     }

@@ -14,6 +14,11 @@ namespace VoiceNotes.Data
             _database = new SQLiteAsyncConnection(dbPath);
             _database.CreateTableAsync<Note>().Wait();
             _database.CreateTableAsync<AudioRecord>().Wait();
+            _database.CreateTableAsync<UserProfile>().Wait();
+            _database.CreateTableAsync<UserPreferences>().Wait();
+            _database.CreateTableAsync<Subscription>().Wait();
+            _database.CreateTableAsync<UsageMetrics>().Wait();
+            _database.CreateTableAsync<PurchaseHistory>().Wait();
         }
 
         // Note operations
@@ -30,7 +35,7 @@ namespace VoiceNotes.Data
             return notes;
         }
 
-        public async Task<Note> GetNoteAsync(int id)
+        public async Task<Note?> GetNoteAsync(int id)
         {
             var note = await _database.Table<Note>().Where(i => i.ID == id).FirstOrDefaultAsync();
             if (note != null)
@@ -142,6 +147,41 @@ namespace VoiceNotes.Data
             }
             
             return await _database.DeleteAsync(audioRecord);
+        }
+        
+        // UserProfile operations
+        public Task<UserProfile> GetUserProfileAsync()
+        {
+            return _database.Table<UserProfile>().FirstOrDefaultAsync();
+        }
+
+        public async Task<int> SaveUserProfileAsync(UserProfile profile)
+        {
+            if (profile.ID != 0)
+            {
+                return await _database.UpdateAsync(profile);
+            }
+            else
+            {
+                return await _database.InsertAsync(profile);
+            }
+        }
+
+        public Task<UserPreferences> GetUserPreferencesAsync()
+        {
+            return _database.Table<UserPreferences>().FirstOrDefaultAsync();
+        }
+
+        public async Task<int> SaveUserPreferencesAsync(UserPreferences preferences)
+        {
+            if (preferences.ID != 0)
+            {
+                return await _database.UpdateAsync(preferences);
+            }
+            else
+            {
+                return await _database.InsertAsync(preferences);
+            }
         }
     }
 }

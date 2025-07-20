@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:VoiceNotes.ViewModels"
+             x:Class="VoiceNotes.Views.LoginPage"
+             Title="Login"
+             BackgroundColor="{StaticResource Background}"
+             Style="{StaticResource PageStyle}">
+    
+    <ContentPage.BindingContext>
+        <viewModels:LoginViewModel />
+    </ContentPage.BindingContext>
+    
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Main Content -->
+        <VerticalStackLayout Grid.Row="0" 
+                             Spacing="32" 
+                             Padding="20" 
+                             VerticalOptions="Center" 
+                             HorizontalOptions="Center">
+            
+            <!-- Logo/Icon -->
+            <Border BackgroundColor="{StaticResource PrimaryContainer}"
+                    HeightRequest="120"
+                    WidthRequest="120"
+                    StrokeThickness="0"
+                    HorizontalOptions="Center">
+                <Border.StrokeShape>
+                    <Ellipse />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource ShadowLight}"
+                            Opacity="0.2"
+                            Radius="16"
+                            Offset="0,8" />
+                </Border.Shadow>
+                <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label FontSize="48" 
+                           HorizontalOptions="Center" 
+                           Text="🎙️" />
+                </StackLayout>
+            </Border>
+
+            <!-- Title -->
+            <Label Text="Welcome to VoiceNotes" 
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource TextPrimary}"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+
+            <!-- Subtitle -->
+            <Label Text="Sign in to sync your notes across devices" 
+                   FontSize="16"
+                   TextColor="{StaticResource TextSecondary}"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+
+            <!-- Login Buttons -->
+            <VerticalStackLayout Spacing="16" WidthRequest="280">
+                
+                <!-- Google Login -->
+                <Button Text="Sign in with Google" 
+                        Command="{Binding GoogleLoginCommand}"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        BackgroundColor="#4285F4"
+                        TextColor="White"
+                        HeightRequest="48" />
+
+                <!-- Apple Login -->
+                <Button Text="Sign in with Apple" 
+                        Command="{Binding AppleLoginCommand}"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        BackgroundColor="Black"
+                        TextColor="White"
+                        HeightRequest="48" />
+
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+
+        <!-- Bottom Section -->
+        <VerticalStackLayout Grid.Row="1" 
+                             Spacing="16" 
+                             Padding="20,0,20,20"
+                             VerticalOptions="End">
+            
+            <!-- Skip Button -->
+            <Button Text="Skip for now" 
+                    Command="{Binding SkipLoginCommand}"
+                    Style="{StaticResource TextButton}"
+                    HorizontalOptions="Center" />
+
+            <!-- Privacy Notice -->
+            <Label Text="By continuing, you agree to our Terms of Service and Privacy Policy" 
+                   FontSize="12"
+                   TextColor="{StaticResource TextTertiary}"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   LineBreakMode="WordWrap" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

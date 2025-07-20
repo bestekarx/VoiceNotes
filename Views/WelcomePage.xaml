@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+  x:Class="VoiceNotes.Views.WelcomePage"
+  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+  xmlns:helpers="clr-namespace:VoiceNotes.Helpers"
+  Title="VoiceNotes'e Hoş Geldiniz"
+  BackgroundColor="{StaticResource Background}"
+  Style="{StaticResource ModernPageStyle}">
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <!-- Top Bar with Skip Button -->
+    <Grid Grid.Row="0" Padding="16,8" BackgroundColor="Transparent">
+      <Button
+        Command="{Binding SkipCommand}"
+        HorizontalOptions="End"
+        Style="{StaticResource ModernTextButtonStyle}"
+        Text="Atla"
+        Padding="12,8"
+        HeightRequest="32" />
+    </Grid>
+
+    <!-- Main Content - CarouselView -->
+    <Grid Grid.Row="1" Padding="24,0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+
+      <!-- CarouselView -->
+      <CarouselView
+        x:Name="WelcomeCarousel"
+        Grid.Row="0"
+        BackgroundColor="Transparent"
+        ItemsSource="{Binding OnboardingSlides}"
+        Position="{Binding CurrentCarouselIndex}"
+        PositionChanged="OnCarouselPositionChanged">
+
+        <CarouselView.ItemTemplate>
+          <DataTemplate>
+            <ScrollView>
+              <StackLayout
+                Padding="16"
+                HorizontalOptions="Center"
+                Spacing="32"
+                VerticalOptions="Center">
+
+                <!-- Icon Container -->
+                <Border
+                  BackgroundColor="{StaticResource PrimaryContainer}"
+                  HeightRequest="180"
+                  StrokeThickness="0"
+                  WidthRequest="180"
+                  HorizontalOptions="Center">
+                  <Border.StrokeShape>
+                    <Ellipse />
+                  </Border.StrokeShape>
+                  <Border.Shadow>
+                    <Shadow
+                      Brush="{StaticResource ShadowLight}"
+                      Opacity="0.15"
+                      Radius="24"
+                      Offset="0,12" />
+                  </Border.Shadow>
+                  <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label
+                      FontSize="72"
+                      HorizontalOptions="Center"
+                      Opacity="0.9"
+                      Text="🎙️" />
+                  </StackLayout>
+                </Border>
+
+                <!-- Content -->
+                <VerticalStackLayout Spacing="20">
+                  <!-- Title -->
+                  <Label
+                    FontAttributes="Bold"
+                    FontSize="28"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    LineBreakMode="WordWrap"
+                    Text="{Binding Title}"
+                    TextColor="{StaticResource TextPrimary}" />
+
+                  <!-- Subtitle -->
+                  <Label
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    LineBreakMode="WordWrap"
+                    Text="{Binding Subtitle}"
+                    TextColor="{StaticResource Primary}" />
+
+                  <!-- Description -->
+                  <Label
+                    FontSize="16"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    LineBreakMode="WordWrap"
+                    Text="{Binding Description}"
+                    TextColor="{StaticResource TextSecondary}" />
+                </VerticalStackLayout>
+              </StackLayout>
+            </ScrollView>
+          </DataTemplate>
+        </CarouselView.ItemTemplate>
+      </CarouselView>
+
+      <!-- Page Indicators -->
+      <StackLayout
+        Grid.Row="1"
+        Margin="0,32,0,0"
+        HorizontalOptions="Center"
+        Orientation="Horizontal"
+        Spacing="12">
+        <IndicatorView
+          x:Name="PageIndicator"
+          Count="{Binding OnboardingSlides.Count}"
+          IndicatorColor="{StaticResource OutlineVariant}"
+          Position="{Binding CurrentCarouselIndex}"
+          SelectedIndicatorColor="{StaticResource Primary}"
+          IndicatorSize="10" />
+      </StackLayout>
+    </Grid>
+
+    <!-- Bottom Navigation -->
+    <Border
+      Grid.Row="2"
+      Padding="24,24,24,40"
+      BackgroundColor="{StaticResource Surface}"
+      StrokeThickness="0">
+      <Border.Shadow>
+        <Shadow
+          Brush="{StaticResource ShadowLight}"
+          Opacity="0.08"
+          Radius="16"
+          Offset="0,-6" />
+      </Border.Shadow>
+
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Previous Button -->
+        <Button
+          Grid.Column="0"
+          Margin="0,0,8,0"
+          Command="{Binding PreviousCommand}"
+          IsEnabled="{Binding CanGoBack}"
+          Style="{StaticResource ModernOutlinedButtonStyle}"
+          Text="Önceki"
+          Padding="20,12"
+          HeightRequest="48" />
+
+        <!-- Next/Get Started Button -->
+        <Button
+          Grid.Column="1"
+          Margin="8,0,0,0"
+          Command="{Binding NextCommand}"
+          IsEnabled="{Binding CanProceed}"
+          Style="{StaticResource ModernFilledButtonStyle}"
+          Text="{Binding ButtonText}"
+          Padding="20,12"
+          HeightRequest="48" />
+      </Grid>
+    </Border>
+  </Grid>
+</ContentPage> 

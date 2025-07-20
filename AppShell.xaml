@@ -1,14 +1,209 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="VoiceNotes.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:views="clr-namespace:VoiceNotes.Views"
-    Title="Voice Notes">
+  x:Class="VoiceNotes.AppShell"
+  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+  xmlns:helpers="clr-namespace:VoiceNotes.Helpers"
+  xmlns:views="clr-namespace:VoiceNotes.Views"
+  Title="VoiceNotes"
+  FlyoutBackgroundColor="{StaticResource Surface}"
+  FlyoutBehavior="Flyout"
+  FlyoutWidth="320">
 
-    <ShellContent
-        Title="Voice Notes"
-        ContentTemplate="{DataTemplate views:NoteListPage}"
-        Route="NoteListPage" />
+  <Shell.Resources>
+    <ResourceDictionary>
+      <!--  Modern Flyout Menu Styles  -->
+      <Style x:Key="ModernFlyoutItemStyle" TargetType="ShellContent">
+        <!--  BackgroundColor is not available on ShellContent  -->
+      </Style>
+
+      <Style x:Key="ModernFlyoutHeaderStyle" TargetType="Grid">
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="Padding" Value="24,40,24,24" />
+      </Style>
+
+      <Style x:Key="ModernFlyoutHeaderTextStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource OnPrimary}" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+      </Style>
+
+      <Style x:Key="ModernFlyoutHeaderSubtextStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource OnPrimary}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Opacity" Value="0.8" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+      </Style>
+
+
+    </ResourceDictionary>
+  </Shell.Resources>
+
+  <!--  Flyout Header  -->
+  <Shell.FlyoutHeader>
+    <Grid Style="{StaticResource ModernFlyoutHeaderStyle}">
+      <StackLayout HorizontalOptions="Center" Spacing="8">
+        <Label Style="{StaticResource ModernFlyoutHeaderTextStyle}" Text="🎙️ VoiceNotes" />
+        <Label Style="{StaticResource ModernFlyoutHeaderSubtextStyle}" Text="AI-Powered Voice Notes" />
+      </StackLayout>
+    </Grid>
+  </Shell.FlyoutHeader>
+
+  <Shell.FlyoutContent>
+    <ScrollView>
+      <StackLayout Spacing="0" Padding="0">
+        
+        <!-- Menu Items -->
+        <Border BackgroundColor="{StaticResource Surface}"
+                StrokeThickness="0"
+                Padding="16,12"
+                Margin="8,4">
+          <Border.StrokeShape>
+            <RoundRectangle CornerRadius="8" />
+          </Border.StrokeShape>
+          <Border.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding GoToNotesCommand}" />
+          </Border.GestureRecognizers>
+          <StackLayout Orientation="Horizontal" Spacing="16">
+            <Border BackgroundColor="{StaticResource PrimaryContainer}"
+                    StrokeThickness="0"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    HorizontalOptions="Start">
+              <Border.StrokeShape>
+                <RoundRectangle CornerRadius="20" />
+              </Border.StrokeShape>
+              <Label Text="📝" 
+                     FontSize="18"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center" />
+            </Border>
+            <Label Text="Notlar" 
+                   FontSize="16" 
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource TextPrimary}"
+                   VerticalOptions="Center" />
+          </StackLayout>
+        </Border>
+
+        <BoxView HeightRequest="1" 
+                 BackgroundColor="{StaticResource Outline}" 
+                 Margin="16,0" />
+
+        <Border BackgroundColor="{StaticResource Surface}"
+                StrokeThickness="0"
+                Padding="16,12"
+                Margin="8,4">
+          <Border.StrokeShape>
+            <RoundRectangle CornerRadius="8" />
+          </Border.StrokeShape>
+          <Border.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding GoToSettingsCommand}" />
+          </Border.GestureRecognizers>
+          <StackLayout Orientation="Horizontal" Spacing="16">
+            <Border BackgroundColor="{StaticResource SecondaryContainer}"
+                    StrokeThickness="0"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    HorizontalOptions="Start">
+              <Border.StrokeShape>
+                <RoundRectangle CornerRadius="20" />
+              </Border.StrokeShape>
+              <Label Text="⚙️" 
+                     FontSize="18"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center" />
+            </Border>
+            <Label Text="Ayarlar" 
+                   FontSize="16" 
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource TextPrimary}"
+                   VerticalOptions="Center" />
+          </StackLayout>
+        </Border>
+
+        <BoxView HeightRequest="1" 
+                 BackgroundColor="{StaticResource Outline}" 
+                 Margin="16,0" />
+
+        <!-- Additional Menu Items -->
+        <Border BackgroundColor="{StaticResource Surface}"
+                StrokeThickness="0"
+                Padding="16,12"
+                Margin="8,4">
+          <Border.StrokeShape>
+            <RoundRectangle CornerRadius="8" />
+          </Border.StrokeShape>
+          <StackLayout Orientation="Horizontal" Spacing="16">
+            <Border BackgroundColor="{StaticResource PrimaryContainer}"
+                    StrokeThickness="0"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    HorizontalOptions="Start">
+              <Border.StrokeShape>
+                <RoundRectangle CornerRadius="20" />
+              </Border.StrokeShape>
+              <Label Text="ℹ️" 
+                     FontSize="18"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center" />
+            </Border>
+            <Label Text="Hakkında" 
+                   FontSize="16" 
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource TextPrimary}"
+                   VerticalOptions="Center" />
+          </StackLayout>
+        </Border>
+
+        <BoxView HeightRequest="1" 
+                 BackgroundColor="{StaticResource Outline}" 
+                 Margin="16,0" />
+
+        <Border BackgroundColor="{StaticResource Surface}"
+                StrokeThickness="0"
+                Padding="16,12"
+                Margin="8,4">
+          <Border.StrokeShape>
+            <RoundRectangle CornerRadius="8" />
+          </Border.StrokeShape>
+          <StackLayout Orientation="Horizontal" Spacing="16">
+            <Border BackgroundColor="{StaticResource SecondaryContainer}"
+                    StrokeThickness="0"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    HorizontalOptions="Start">
+              <Border.StrokeShape>
+                <RoundRectangle CornerRadius="20" />
+              </Border.StrokeShape>
+              <Label Text="📧" 
+                     FontSize="18"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center" />
+            </Border>
+            <Label Text="İletişim" 
+                   FontSize="16" 
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource TextPrimary}"
+                   VerticalOptions="Center" />
+          </StackLayout>
+        </Border>
+
+      </StackLayout>
+    </ScrollView>
+  </Shell.FlyoutContent>
+
+  <!--  Main Content  -->
+  <ShellContent
+    Title="Notlar"
+    ContentTemplate="{DataTemplate views:NoteListPage}"
+    Route="NoteListPage" />
+
+  <!--  Settings  -->
+  <ShellContent
+    Title="Ayarlar"
+    ContentTemplate="{DataTemplate views:SettingsPage}"
+    Route="SettingsPage" />
 
 </Shell>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VoiceNotes.Views.SettingsPage"
+             xmlns:helpers="clr-namespace:VoiceNotes.Helpers"
+             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.Cards;assembly=Syncfusion.Maui.Cards"
+             Title="{x:Static helpers:AppResources.Settings}"
+             Style="{StaticResource ModernPageStyle}">
+
+    <ScrollView>
+        <StackLayout Spacing="24" Padding="20">
+            
+            <!-- Header -->
+            <Border BackgroundColor="{StaticResource Surface}"
+                    StrokeThickness="0"
+                    Padding="24,32">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource ShadowLight}" 
+                            Offset="0,2" 
+                            Opacity="0.1" 
+                            Radius="8" />
+                </Border.Shadow>
+                <StackLayout Spacing="12">
+                    <Label Text="⚙️ Ayarlar" 
+                           Style="{StaticResource ModernHeaderTextStyle}" />
+                    <Label Text="VoiceNotes deneyiminizi özelleştirin" 
+                           Style="{StaticResource ModernBodyTextStyle}"
+                           HorizontalOptions="Center" />
+                </StackLayout>
+            </Border>
+
+            <!-- Language Settings -->
+            <Border BackgroundColor="{StaticResource Surface}"
+                    StrokeThickness="1"
+                    Stroke="{StaticResource Outline}"
+                    Padding="20">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <StackLayout Spacing="16">
+                    <Label Text="🌍 Dil / Language" 
+                           Style="{StaticResource ModernSubheaderTextStyle}" />
+                    
+                    <Picker Title="Dil Seçin / Select Language"
+                            SelectedItem="{Binding SelectedLanguage}"
+                            ItemsSource="{Binding Languages}"
+                            Style="{StaticResource ModernPickerStyle}" />
+                </StackLayout>
+            </Border>
+
+            <!-- AI Settings -->
+            <Border BackgroundColor="{StaticResource Surface}"
+                    StrokeThickness="1"
+                    Stroke="{StaticResource Outline}"
+                    Padding="20">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <StackLayout Spacing="16">
+                    <Label Text="🤖 AI Ayarları" 
+                           Style="{StaticResource ModernSubheaderTextStyle}" />
+                    
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Label Text="Otomatik Özetleme" 
+                               VerticalOptions="Center" />
+                        <Switch IsToggled="True" HorizontalOptions="EndAndExpand" />
+                    </StackLayout>
+                </StackLayout>
+            </Border>
+
+            <!-- About Section -->
+            <Border BackgroundColor="{StaticResource Surface}"
+                    StrokeThickness="1"
+                    Stroke="{StaticResource Outline}"
+                    Padding="20">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <StackLayout Spacing="16">
+                    <Label Text="ℹ️ Hakkında" 
+                           Style="{StaticResource ModernSubheaderTextStyle}" />
+                    
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Label Text="Versiyon" 
+                               VerticalOptions="Center" />
+                        <Label Text="1.0.0" TextColor="{StaticResource Primary}" 
+                               VerticalOptions="Center" HorizontalOptions="EndAndExpand" />
+                    </StackLayout>
+                    
+                    <Button Text="Gizlilik Politikası"
+                            Style="{StaticResource ModernTextButtonStyle}"
+                            HorizontalOptions="Start" />
+                    
+                    <Button Text="Kullanım Şartları"
+                            Style="{StaticResource ModernTextButtonStyle}"
+                            HorizontalOptions="Start" />
+                </StackLayout>
+            </Border>
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage> 

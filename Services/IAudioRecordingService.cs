@@ -9,7 +9,6 @@ namespace VoiceNotes.Services
         TimeSpan RemainingTime { get; }
         
         event EventHandler<bool>? RecordingStatusChanged;
-        event EventHandler<double>? AudioLevelChanged;
         event EventHandler<TimeSpan>? RecordingDurationChanged;
         event EventHandler<string>? RecordingLimitReached;
         

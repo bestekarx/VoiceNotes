@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Modern Color Palette -->
+    <Color x:Key="Primary">#6366F1</Color>
+    <Color x:Key="PrimaryVariant">#4F46E5</Color>
+    <Color x:Key="Secondary">#EC4899</Color>
+    <Color x:Key="SecondaryVariant">#DB2777</Color>
+    
+    <Color x:Key="Background">#FAFAFA</Color>
+    <Color x:Key="Surface">#FFFFFF</Color>
+    <Color x:Key="SurfaceElevated">#FFFFFF</Color>
+    
+    <Color x:Key="TextPrimary">#1F2937</Color>
+    <Color x:Key="TextSecondary">#6B7280</Color>
+    <Color x:Key="TextTertiary">#9CA3AF</Color>
+    
+    <Color x:Key="Outline">#E5E7EB</Color>
+    <Color x:Key="OutlineVariant">#F3F4F6</Color>
+    
+    <Color x:Key="Error">#EF4444</Color>
+    <Color x:Key="Success">#10B981</Color>
+    <Color x:Key="Warning">#F59E0B</Color>
+    <Color x:Key="Info">#3B82F6</Color>
+    
+    <Color x:Key="OnPrimary">#FFFFFF</Color>
+    <Color x:Key="OnSecondary">#FFFFFF</Color>
+    <Color x:Key="OnSurface">#1F2937</Color>
+    <Color x:Key="OnBackground">#1F2937</Color>
+    
+    <Color x:Key="PrimaryContainer">#EEF2FF</Color>
+    <Color x:Key="SecondaryContainer">#FCE7F3</Color>
+    <Color x:Key="OnPrimaryContainer">#1E1B4B</Color>
+    <Color x:Key="OnSecondaryContainer">#831843</Color>
+    
+    <Color x:Key="ShadowLight">#000000</Color>
+    <Color x:Key="ShadowMedium">#000000</Color>
+    <Color x:Key="ShadowDark">#000000</Color>
+
+    <!-- Modern Styles -->
+    <Style x:Key="ModernPageStyle" TargetType="ContentPage">
+        <Setter Property="BackgroundColor" Value="{StaticResource Background}" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style x:Key="ModernCardStyle" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="BorderColor" Value="{StaticResource Outline}" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="Padding" Value="20" />
+        <Setter Property="Margin" Value="16,8" />
+        <Setter Property="HasShadow" Value="True" />
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Brush="{StaticResource ShadowLight}" 
+                        Offset="0,4" 
+                        Opacity="0.08" 
+                        Radius="12" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ModernHeaderTextStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="28" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+    </Style>
+
+    <Style x:Key="ModernSubheaderTextStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
+        <Setter Property="LineBreakMode" Value="TailTruncation" />
+        <Setter Property="MaxLines" Value="2" />
+    </Style>
+
+    <Style x:Key="ModernBodyTextStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="{StaticResource TextSecondary}" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+    </Style>
+
+    <Style x:Key="ModernCaptionTextStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextColor" Value="{StaticResource TextTertiary}" />
+    </Style>
+
+    <Style x:Key="ModernFilledButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="TextColor" Value="{StaticResource OnPrimary}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="24,16" />
+        <Setter Property="HeightRequest" Value="48" />
+    </Style>
+
+    <Style x:Key="ModernOutlinedButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="24,16" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="BorderColor" Value="{StaticResource Primary}" />
+        <Setter Property="BorderWidth" Value="2" />
+    </Style>
+
+    <Style x:Key="ModernTextButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="HeightRequest" Value="32" />
+    </Style>
+
+    <Style x:Key="ModernCollectionViewStyle" TargetType="CollectionView">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
+
+    <Style x:Key="ModernFloatingActionButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="TextColor" Value="{StaticResource OnPrimary}" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="WidthRequest" Value="64" />
+        <Setter Property="HeightRequest" Value="64" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="24" />
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="VerticalOptions" Value="End" />
+    </Style>
+
+</ResourceDictionary> 

@@ -4,7 +4,6 @@ using VoiceNotes.Models;
 using VoiceNotes.Views;
 using VoiceNotes.Services;
 using VoiceNotes.Helpers;
-using Microsoft.Extensions.Logging;
 
 namespace VoiceNotes.ViewModels
 {
@@ -12,19 +11,17 @@ namespace VoiceNotes.ViewModels
     {
         private readonly NoteDatabase _database;
         private readonly IAudioPlaybackService _audioPlaybackService;
-        private readonly ILogger<NoteListViewModel> _logger;
         private bool _isRefreshing;
 
         public NoteListViewModel(
             NoteDatabase database, 
-            IAudioPlaybackService audioPlaybackService,
-            ILogger<NoteListViewModel> logger)
+            IAudioPlaybackService audioPlaybackService)
         {
             _database = database;
             _audioPlaybackService = audioPlaybackService;
-            _logger = logger;
             
             Notes = new ObservableCollection<Note>();
+            
             LoadNotesCommand = new Command(async () => await LoadNotesAsync());
             AddNoteCommand = new Command(async () => await AddNoteAsync());
             DeleteNoteCommand = new Command<Note>(async (note) => await DeleteNoteAsync(note));
@@ -54,7 +51,7 @@ namespace VoiceNotes.ViewModels
                 IsBusy = true;
                 IsRefreshing = true;
 
-                _logger.LogInformation("Loading notes from database");
+                System.Diagnostics.Debug.WriteLine("Loading notes from database");
                 var notes = await _database.GetNotesAsync();
                 
                 Notes.Clear();
@@ -63,13 +60,12 @@ namespace VoiceNotes.ViewModels
                     Notes.Add(note);
                 }
 
-                _logger.LogInformation("Loaded {NoteCount} notes", Notes.Count);
+                System.Diagnostics.Debug.WriteLine($"Loaded {Notes.Count} notes");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error loading notes");
-                VoiceCrashLogger.Log(ex, "LoadNotesAsync");
-                await Shell.Current.DisplayAlert("Error", "Failed to load notes. Please try again.", "OK");
+                VoiceCrashLogger.LogError(ex, "Error loading notes");
+                await Shell.Current.DisplayAlert(AppResources.Error, AppResources.FailedToLoadNotes, AppResources.OK);
             }
             finally
             {
@@ -86,14 +82,13 @@ namespace VoiceNotes.ViewModels
             try
             {
                 IsBusy = true;
-                _logger.LogInformation("Navigating to create new note");
+                System.Diagnostics.Debug.WriteLine("Navigating to create new note");
                 await Shell.Current.GoToAsync(nameof(NoteDetailPage));
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error navigating to note detail");
-                VoiceCrashLogger.Log(ex, "AddNoteAsync");
-                await Shell.Current.DisplayAlert("Error", "Failed to create new note. Please try again.", "OK");
+                VoiceCrashLogger.LogError(ex, "Error navigating to note detail");
+                await Shell.Current.DisplayAlert(AppResources.Error, AppResources.FailedToCreateNote, AppResources.OK);
             }
             finally
             {
@@ -109,14 +104,13 @@ namespace VoiceNotes.ViewModels
             try
             {
                 IsBusy = true;
-                _logger.LogInformation("Navigating to note detail for note {NoteId}", note.ID);
+                System.Diagnostics.Debug.WriteLine($"Navigating to note detail for note {note.ID}");
                 await Shell.Current.GoToAsync($"{nameof(NoteDetailPage)}?noteId={note.ID}");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error navigating to note detail for note {NoteId}", note.ID);
-                VoiceCrashLogger.Log(ex, "GoToNoteDetailAsync");
-                await Shell.Current.DisplayAlert("Error", "Failed to open note. Please try again.", "OK");
+                VoiceCrashLogger.LogError(ex, $"Error navigating to note detail for note {note.ID}");
+                await Shell.Current.DisplayAlert(AppResources.Error, AppResources.FailedToOpenNote, AppResources.OK);
             }
             finally
             {
@@ -141,11 +135,11 @@ namespace VoiceNotes.ViewModels
                     return;
 
                 IsBusy = true;
-                _logger.LogInformation("Deleting note {NoteId}", note.ID);
+                System.Diagnostics.Debug.WriteLine($"Deleting note {note.ID}");
 
                 // First get all audio records for this note
                 var audioRecords = await _database.GetAudioRecordsByNoteIdAsync(note.ID);
-                _logger.LogInformation("Found {AudioRecordCount} audio records for note {NoteId}", audioRecords.Count, note.ID);
+                System.Diagnostics.Debug.WriteLine($"Found {audioRecords.Count} audio records for note {note.ID}");
 
                 // Delete the note (this should cascade delete audio records via database)
                 await _database.DeleteNoteAsync(note);
@@ -156,26 +150,25 @@ namespace VoiceNotes.ViewModels
                     try
                     {
                         File.Delete(note.AudioFilePath);
-                        _logger.LogInformation("Deleted old audio file: {FilePath}", note.AudioFilePath);
+                        System.Diagnostics.Debug.WriteLine($"Deleted old audio file: {note.AudioFilePath}");
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogWarning(ex, "Failed to delete old audio file: {FilePath}", note.AudioFilePath);
+                        VoiceCrashLogger.LogError(ex, $"Failed to delete old audio file: {note.AudioFilePath}");
                     }
                 }
 
                 // Remove from UI collection
                 Notes.Remove(note);
 
-                _logger.LogInformation("Note {NoteId} deleted successfully", note.ID);
+                System.Diagnostics.Debug.WriteLine($"Note {note.ID} deleted successfully");
                 
                 // Show success message without blocking
                 _ = Shell.Current.DisplayAlert(AppResources.Success, AppResources.NoteDeletedSuccess, AppResources.OK);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting note {NoteId}", note?.ID);
-                VoiceCrashLogger.Log(ex, "DeleteNoteAsync");
+                VoiceCrashLogger.LogError(ex, $"Error deleting note {note?.ID}");
                 await Shell.Current.DisplayAlert(AppResources.Error, AppResources.DeleteNoteError, AppResources.OK);
             }
             finally

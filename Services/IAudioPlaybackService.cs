@@ -6,12 +6,11 @@ namespace VoiceNotes.Services
         string CurrentPlayingFile { get; }
         
         event EventHandler<bool>? PlaybackStatusChanged;
-        event EventHandler<TimeSpan>? PositionChanged;
         event EventHandler<string>? CurrentFileChanged;
         
         Task<bool> PlayAsync(string filePath);
         Task StopAsync();
-        Task<TimeSpan> GetDurationAsync(string filePath);
+        TimeSpan GetDurationAsync(string filePath);
         bool IsPlayingFile(string filePath);
     }
 } 

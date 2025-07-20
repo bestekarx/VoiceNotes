@@ -17,7 +17,6 @@ namespace VoiceNotes.Services
         public string CurrentPlayingFile => _currentPlayingFile;
 
         public event EventHandler<bool>? PlaybackStatusChanged;
-        public event EventHandler<TimeSpan>? PositionChanged;
         public event EventHandler<string>? CurrentFileChanged;
 
         public async Task<bool> PlayAsync(string filePath)
@@ -50,7 +49,7 @@ namespace VoiceNotes.Services
                 CurrentFileChanged?.Invoke(this, filePath);
                 
                 // Get estimated duration and auto-stop after that time
-                var estimatedDuration = await GetDurationAsync(filePath);
+                var estimatedDuration = GetDurationAsync(filePath);
                 if (estimatedDuration > TimeSpan.Zero)
                 {
                     _ = Task.Run(async () =>
@@ -117,7 +116,7 @@ namespace VoiceNotes.Services
             }
         }
 
-        public async Task<TimeSpan> GetDurationAsync(string filePath)
+        public TimeSpan GetDurationAsync(string filePath)
         {
             try
             {

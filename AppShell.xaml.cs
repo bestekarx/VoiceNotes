@@ -1,4 +1,5 @@
 ﻿using VoiceNotes.Views;
+using System.Windows.Input;
 
 namespace VoiceNotes;
 
@@ -7,12 +8,24 @@ public partial class AppShell : Shell
     public AppShell()
     {
         InitializeComponent();
-        RegisterRoutes();
+        
+        // Register routes
+        Routing.RegisterRoute(nameof(NoteDetailPage), typeof(NoteDetailPage));
+        Routing.RegisterRoute(nameof(WelcomePage), typeof(WelcomePage));
+        
+        // Set binding context for flyout menu
+        BindingContext = this;
     }
 
-    private static void RegisterRoutes()
+    public ICommand GoToNotesCommand => new Command(async () =>
     {
-        Routing.RegisterRoute(nameof(NoteListPage), typeof(NoteListPage));
-        Routing.RegisterRoute(nameof(NoteDetailPage), typeof(NoteDetailPage));
-    }
+        await Shell.Current.GoToAsync("//NoteListPage");
+        Shell.Current.FlyoutIsPresented = false;
+    });
+
+    public ICommand GoToSettingsCommand => new Command(async () =>
+    {
+        await Shell.Current.GoToAsync("//SettingsPage");
+        Shell.Current.FlyoutIsPresented = false;
+    });
 }

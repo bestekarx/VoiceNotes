@@ -5,7 +5,6 @@ using VoiceNotes.Data;
 using VoiceNotes.Models;
 using VoiceNotes.Services;
 using VoiceNotes.Helpers;
-using Microsoft.Extensions.Logging;
 
 namespace VoiceNotes.ViewModels
 {
@@ -16,7 +15,6 @@ namespace VoiceNotes.ViewModels
         private readonly IAudioPlaybackService _audioPlaybackService;
         private readonly IApiService _apiService;
         private readonly IFileUploadService _fileUploadService;
-        private readonly ILogger<NoteDetailViewModel> _logger;
         
         private Note? _note;
         private string _title = string.Empty;
@@ -36,15 +34,13 @@ namespace VoiceNotes.ViewModels
             IAudioRecordingService audioRecordingService,
             IAudioPlaybackService audioPlaybackService,
             IApiService apiService,
-            IFileUploadService fileUploadService,
-            ILogger<NoteDetailViewModel> logger)
+            IFileUploadService fileUploadService)
         {
             _database = database;
             _audioRecordingService = audioRecordingService;
             _audioPlaybackService = audioPlaybackService;
             _apiService = apiService;
             _fileUploadService = fileUploadService;
-            _logger = logger;
 
             // Commands
             SaveNoteCommand = new Command(async () => await SaveNoteAsync(), () => CanSave);
@@ -60,16 +56,12 @@ namespace VoiceNotes.ViewModels
             SummarizeAudioCommand = new Command<AudioRecord>(async (audio) => await QueueSummaryAsync(audio), (audio) => CanSummarize(audio));
             ToggleSummaryCommand = new Command<AudioRecord>(ToggleSummary);
 
-            // Re-AI Summary ve özet düzenleme için iki yeni komut ekliyorum: ReSummarizeAudioCommand ve EditSummaryCommand. Ayrıca özet düzenleme ve expand/collapse için gerekli metotları ekliyorum.
             ReSummarizeAudioCommand = new Command<AudioRecord>(async (audio) => await ReSummarizeAudioAsync(audio), (audio) => audio != null && audio.HasSummary);
             EditSummaryCommand = new Command<AudioRecord>(EditSummary);
             ToggleSummaryExpandCommand = new Command<AudioRecord>(ToggleSummaryExpand);
 
-            // Transcript ve Summary düzenleme komutları
             EditTranscriptCommand = new Command<AudioRecord>(EditTranscript);
-            EditSummaryCommand = new Command<AudioRecord>(EditSummary);
 
-            // Subscribe to events
             _audioRecordingService.RecordingStatusChanged += OnRecordingStatusChanged;
             _audioRecordingService.RecordingDurationChanged += OnRecordingDurationChanged;
             _audioRecordingService.RecordingLimitReached += OnRecordingLimitReached;
@@ -84,10 +76,8 @@ namespace VoiceNotes.ViewModels
             {
                 if (SetProperty(ref _note, value))
                 {
-                    // Update Title when Note changes
                     Title = _note?.Title ?? string.Empty;
                     
-                    // Update AudioRecords collection
                     AudioRecords.Clear();
                     if (_note?.AudioRecords != null)
                     {
@@ -113,7 +103,6 @@ namespace VoiceNotes.ViewModels
             {
                 if (SetProperty(ref _title, value))
                 {
-                    // Update Note.Title when Title changes
                     if (_note != null)
                     {
                         _note.Title = value;
@@ -170,9 +159,9 @@ namespace VoiceNotes.ViewModels
             set => SetProperty(ref _recordingDuration, value);
         }
 
-        public bool HasAudioFile => Note != null && !string.IsNullOrEmpty(Note.AudioFilePath);
+        public bool HasAudioFile => Note?.AudioFilePath != null && !string.IsNullOrEmpty(Note!.AudioFilePath);
         public bool HasAudioRecords => AudioRecords.Count > 0;
-        public string AudioFileName => HasAudioFile ? Path.GetFileName(Note.AudioFilePath) : string.Empty;
+        public string AudioFileName => HasAudioFile ? Path.GetFileName(Note!.AudioFilePath) : string.Empty;
 
         public string RecordButtonText => IsRecording ? "⏸" : "⏺";
         public Color RecordButtonColor => IsRecording ? Colors.Orange : Colors.Red;
@@ -189,7 +178,6 @@ namespace VoiceNotes.ViewModels
         public ICommand PlayCommand { get; }
         public ICommand StopCommand { get; }
         
-        // Audio Record Commands
         public ICommand PlayAudioRecordCommand { get; }
         public ICommand DeleteAudioRecordCommand { get; }
         public ICommand EditAudioRecordCommand { get; }
@@ -205,7 +193,7 @@ namespace VoiceNotes.ViewModels
             try
             {
                 IsBusy = true;
-                _logger.LogInformation("Creating new note");
+                System.Diagnostics.Debug.WriteLine("Creating new note");
                 
                 Note = new Note
                 {
@@ -221,8 +209,7 @@ namespace VoiceNotes.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating new note");
-                VoiceCrashLogger.Log(ex, "CreateNewNoteAsync");
+                VoiceCrashLogger.LogError(ex, "Error creating new note");
                 await Shell.Current.DisplayAlert("Error", "Failed to create new note", "OK");
             }
             finally
@@ -236,13 +223,11 @@ namespace VoiceNotes.ViewModels
             try
             {
                 IsBusy = true;
-                _logger.LogInformation("Loading note {NoteId}", noteId);
                 System.Diagnostics.Debug.WriteLine($"[VIEWMODEL] Starting LoadNoteAsync for noteId: {noteId}");
                 
                 var note = await _database.GetNoteAsync(noteId);
                 if (note == null)
                 {
-                    _logger.LogWarning("Note {NoteId} not found", noteId);
                     System.Diagnostics.Debug.WriteLine($"[VIEWMODEL] Note {noteId} not found in database");
                     await Shell.Current.DisplayAlert("Error", "Note not found", "OK");
                     await Shell.Current.GoToAsync("..");
@@ -253,8 +238,7 @@ namespace VoiceNotes.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error loading note {NoteId}", noteId);
-                VoiceCrashLogger.Log(ex, "LoadNoteAsync");
+                VoiceCrashLogger.LogError(ex, $"Error loading note {noteId}");
                 await Shell.Current.DisplayAlert("Error", "Failed to load note", "OK");
             }
             finally
@@ -274,18 +258,15 @@ namespace VoiceNotes.ViewModels
 
                 if (IsRecording)
                 {
-                    // Stop recording
-                    _logger.LogInformation("Stopping recording");
+                    System.Diagnostics.Debug.WriteLine("Stopping recording");
                     var filePath = await _audioRecordingService.StopRecordingAsync();
                     
                     if (!string.IsNullOrEmpty(filePath) && Note != null)
                     {
-                        // If Note is not saved yet, save it first with auto-generated title
                         if (Note.ID == 0)
                         {
-                            _logger.LogInformation("Note not saved yet, auto-saving before creating audio record");
+                            System.Diagnostics.Debug.WriteLine("Note not saved yet, auto-saving before creating audio record");
                             
-                            // Auto-generate title if empty
                             if (string.IsNullOrWhiteSpace(Note.Title))
                             {
                                 Note.Title = $"Untitled - {DateTime.Now:MMM dd, HH:mm}";
@@ -293,24 +274,17 @@ namespace VoiceNotes.ViewModels
                             }
                             
                             await _database.SaveNoteAsync(Note);
-                            _logger.LogInformation("Note auto-saved with ID: {NoteId} and title: {Title}", Note.ID, Note.Title);
+                            System.Diagnostics.Debug.WriteLine($"Note auto-saved with ID: {Note.ID} and title: {Note.Title}");
                         }
                         
-                        // Create new AudioRecord
                         var audioRecord = await _audioRecordingService.CreateAudioRecordAsync(Note.ID);
-                        _logger.LogInformation("Created audio record with ID: {AudioId}", audioRecord.ID);
-                        System.Diagnostics.Debug.WriteLine($"[RECORD] Created audio record: ID={audioRecord.ID}, NoteID={audioRecord.NoteID}, Title='{audioRecord.Title}', FilePath='{audioRecord.FilePath}'");
+                        System.Diagnostics.Debug.WriteLine($"Created audio record with ID: {audioRecord.ID}");
                         
-                        // Save to database
                         await _database.SaveAudioRecordAsync(audioRecord);
-                        _logger.LogInformation("Audio record saved to database");
-                        System.Diagnostics.Debug.WriteLine($"[RECORD] Audio record saved to database with final ID: {audioRecord.ID}");
+                        System.Diagnostics.Debug.WriteLine($"Audio record saved to database with final ID: {audioRecord.ID}");
                         
-                        // Add to collection
-                        AudioRecords.Insert(0, audioRecord); // Insert at top for newest first
-                        _logger.LogInformation("Audio record added to collection. Total count: {Count}", AudioRecords.Count);
-                        System.Diagnostics.Debug.WriteLine($"[RECORD] Audio record added to collection. Total count: {AudioRecords.Count}");
-                        System.Diagnostics.Debug.WriteLine($"[RECORD] HasAudioRecords after adding: {HasAudioRecords}");
+                        AudioRecords.Insert(0, audioRecord);
+                        System.Diagnostics.Debug.WriteLine($"Audio record added to collection. Total count: {AudioRecords.Count}");
                         
                         RecordingStatus = "Recording saved successfully";
                         RecordingStatusColor = Colors.Green;
@@ -321,8 +295,7 @@ namespace VoiceNotes.ViewModels
                 }
                 else
                 {
-                    // Start recording
-                    _logger.LogInformation("Starting recording");
+                    System.Diagnostics.Debug.WriteLine("Starting recording");
                     var success = await _audioRecordingService.StartRecordingAsync();
                     
                     if (success)
@@ -340,8 +313,7 @@ namespace VoiceNotes.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error during recording");
-                VoiceCrashLogger.Log(ex, "RecordAsync");
+                VoiceCrashLogger.LogError(ex, "Error during recording");
                 await Shell.Current.DisplayAlert("Error", "Recording failed. Please try again.", "OK");
             }
             finally
@@ -358,7 +330,7 @@ namespace VoiceNotes.ViewModels
             try
             {
                 IsBusy = true;
-                _logger.LogInformation("Playing audio file");
+                System.Diagnostics.Debug.WriteLine("Playing audio file");
 
                 if (IsPlaying)
                 {
@@ -366,17 +338,19 @@ namespace VoiceNotes.ViewModels
                 }
                 else
                 {
-                    var success = await _audioPlaybackService.PlayAsync(Note.AudioFilePath);
-                    if (!success)
+                    if (Note?.AudioFilePath != null)
                     {
-                        await Shell.Current.DisplayAlert("Error", "Failed to play audio", "OK");
+                        var success = await _audioPlaybackService.PlayAsync(Note.AudioFilePath);
+                        if (!success)
+                        {
+                            await Shell.Current.DisplayAlert("Error", "Failed to play audio", "OK");
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error playing audio");
-                VoiceCrashLogger.Log(ex, "PlayAsync");
+                VoiceCrashLogger.LogError(ex, "Error playing audio");
                 await Shell.Current.DisplayAlert("Error", "Failed to play audio. Please try again.", "OK");
             }
             finally
@@ -393,11 +367,11 @@ namespace VoiceNotes.ViewModels
             try
             {
                 IsBusy = true;
-                _logger.LogInformation("Stopping audio operation");
+                System.Diagnostics.Debug.WriteLine("Stopping audio operation");
 
                 if (IsRecording)
                 {
-                    await RecordAsync(); // This will stop recording
+                    await RecordAsync();
                 }
                 else if (IsPlaying)
                 {
@@ -406,8 +380,7 @@ namespace VoiceNotes.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error stopping audio operation");
-                VoiceCrashLogger.Log(ex, "StopAsync");
+                VoiceCrashLogger.LogError(ex, "Error stopping audio operation");
                 await Shell.Current.DisplayAlert("Error", "Failed to stop audio operation", "OK");
             }
             finally
@@ -424,7 +397,7 @@ namespace VoiceNotes.ViewModels
             try
             {
                 IsBusy = true;
-                _logger.LogInformation("Saving note");
+                System.Diagnostics.Debug.WriteLine("Saving note");
 
                 if (string.IsNullOrEmpty(Title))
                 {
@@ -435,14 +408,13 @@ namespace VoiceNotes.ViewModels
                 Note.Date = DateTime.Now;
                 await _database.SaveNoteAsync(Note);
                 
-                _logger.LogInformation("Note saved successfully");
+                System.Diagnostics.Debug.WriteLine("Note saved successfully");
                 await Shell.Current.DisplayAlert(AppResources.Success, AppResources.NoteSavedSuccess, AppResources.OK);
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error saving note");
-                VoiceCrashLogger.Log(ex, "SaveNoteAsync");
+                VoiceCrashLogger.LogError(ex, "Error saving note");
                 await Shell.Current.DisplayAlert(AppResources.Error, AppResources.SaveNoteError, AppResources.OK);
             }
             finally
@@ -468,24 +440,22 @@ namespace VoiceNotes.ViewModels
                     return;
 
                 IsBusy = true;
-                _logger.LogInformation("Deleting note");
+                System.Diagnostics.Debug.WriteLine("Deleting note");
 
                 await _database.DeleteNoteAsync(Note);
                 
-                // Delete audio file if exists
                 if (HasAudioFile && File.Exists(Note.AudioFilePath))
                 {
                     File.Delete(Note.AudioFilePath);
                 }
 
-                _logger.LogInformation("Note deleted successfully");
+                System.Diagnostics.Debug.WriteLine("Note deleted successfully");
                 await Shell.Current.DisplayAlert("Success", "Note deleted successfully", "OK");
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting note");
-                VoiceCrashLogger.Log(ex, "DeleteNoteAsync");
+                VoiceCrashLogger.LogError(ex, "Error deleting note");
                 await Shell.Current.DisplayAlert("Error", "Failed to delete note. Please try again.", "OK");
             }
             finally
@@ -516,7 +486,6 @@ namespace VoiceNotes.ViewModels
 
         private void OnCurrentFileChanged(object? sender, string? filePath)
         {
-            // Update IsCurrentlyPlaying for all audio records
             foreach (var audioRecord in AudioRecords)
             {
                 audioRecord.IsCurrentlyPlaying = !string.IsNullOrEmpty(filePath) && 
@@ -531,7 +500,6 @@ namespace VoiceNotes.ViewModels
             OnPropertyChanged(nameof(AudioRecords));
         }
 
-        // Audio Record Management Methods
         public async Task PlayAudioRecordAsync(AudioRecord audioRecord)
         {
             if (audioRecord == null || !audioRecord.CanPlay)
@@ -540,7 +508,7 @@ namespace VoiceNotes.ViewModels
             try
             {
                 IsBusy = true;
-                _logger.LogInformation("Playing audio record {AudioId}", audioRecord.ID);
+                System.Diagnostics.Debug.WriteLine($"Playing audio record {audioRecord.ID}");
 
                 var success = await _audioPlaybackService.PlayAsync(audioRecord.FilePath);
                 if (!success)
@@ -550,8 +518,7 @@ namespace VoiceNotes.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error playing audio record {AudioId}", audioRecord.ID);
-                VoiceCrashLogger.Log(ex, "PlayAudioRecordAsync");
+                VoiceCrashLogger.LogError(ex, $"Error playing audio record {audioRecord.ID}");
                 await Shell.Current.DisplayAlert("Error", "Failed to play audio. Please try again.", "OK");
             }
             finally
@@ -577,39 +544,34 @@ namespace VoiceNotes.ViewModels
                     return;
 
                 IsBusy = true;
-                _logger.LogInformation("Deleting audio record {AudioId}", audioRecord.ID);
+                System.Diagnostics.Debug.WriteLine($"Deleting audio record {audioRecord.ID}");
 
-                // Delete from database
                 await _database.DeleteAudioRecordAsync(audioRecord);
                 
-                // Delete audio file if exists
                 if (!string.IsNullOrEmpty(audioRecord.FilePath) && File.Exists(audioRecord.FilePath))
                 {
                     try
                     {
                         File.Delete(audioRecord.FilePath);
-                        _logger.LogInformation("Audio file deleted: {FilePath}", audioRecord.FilePath);
+                        System.Diagnostics.Debug.WriteLine($"Audio file deleted: {audioRecord.FilePath}");
                     }
                     catch (Exception fileEx)
                     {
-                        _logger.LogWarning(fileEx, "Failed to delete audio file: {FilePath}", audioRecord.FilePath);
+                        VoiceCrashLogger.LogError(fileEx, $"Failed to delete audio file: {audioRecord.FilePath}");
                     }
                 }
                 
-                // Remove from collection
                 AudioRecords.Remove(audioRecord);
                 
-                // Update UI
                 OnPropertyChanged(nameof(HasAudioRecords));
                 RecordingStatus = HasAudioRecords ? $"{AudioRecords.Count} recordings" : "Ready to record";
                 RecordingStatusColor = HasAudioRecords ? Colors.Green : Colors.Gray;
 
-                _logger.LogInformation("Audio record {AudioId} deleted successfully", audioRecord.ID);
+                System.Diagnostics.Debug.WriteLine($"Audio record {audioRecord.ID} deleted successfully");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting audio record {AudioId}", audioRecord.ID);
-                VoiceCrashLogger.Log(ex, "DeleteAudioRecordAsync");
+                VoiceCrashLogger.LogError(ex, $"Error deleting audio record {audioRecord.ID}");
                 await Shell.Current.DisplayAlert("Error", "Failed to delete recording. Please try again.", "OK");
             }
             finally
@@ -636,17 +598,16 @@ namespace VoiceNotes.ViewModels
                     return;
 
                 IsBusy = true;
-                _logger.LogInformation("Editing audio record {AudioId}", audioRecord.ID);
+                System.Diagnostics.Debug.WriteLine($"Editing audio record {audioRecord.ID}");
 
                 audioRecord.Title = newTitle;
                 await _database.SaveAudioRecordAsync(audioRecord);
 
-                _logger.LogInformation("Audio record {AudioId} updated successfully", audioRecord.ID);
+                System.Diagnostics.Debug.WriteLine($"Audio record {audioRecord.ID} updated successfully");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error editing audio record {AudioId}", audioRecord.ID);
-                VoiceCrashLogger.Log(ex, "EditAudioRecordAsync");
+                VoiceCrashLogger.LogError(ex, $"Error editing audio record {audioRecord.ID}");
                 await Shell.Current.DisplayAlert("Error", "Failed to update recording title. Please try again.", "OK");
             }
             finally
@@ -662,7 +623,6 @@ namespace VoiceNotes.ViewModels
             try
             {
                 IsBusy = true;
-                // 404 hatasını önlemek için: Dosya yüklü mü kontrol et
                 if (!audioRecord.IsUploaded)
                 {
                     var uploadSuccess = await _fileUploadService.UploadAudioRecordAsync(audioRecord);
@@ -673,7 +633,6 @@ namespace VoiceNotes.ViewModels
                     }
                     audioRecord.IsUploaded = true;
                 }
-                // 1. Transkripsiyon başlat
                 var backendAudioId = audioRecord.BackendAudioId;
                 if (string.IsNullOrEmpty(backendAudioId))
                 {
@@ -686,24 +645,21 @@ namespace VoiceNotes.ViewModels
                     await Shell.Current.DisplayAlert("Hata", transcribeResponse?.Message ?? "Transkripsiyon başlatılamadı.", "Tamam");
                     return;
                 }
-                // 2. Özet alma (transkripsiyon tamamlanınca)
                 var summaryResponse = await _apiService.GetSummaryAsync(backendAudioId);
                 if (summaryResponse == null || !summaryResponse.Success)
                 {
                     await Shell.Current.DisplayAlert("Hata", summaryResponse?.Summary?.Text ?? "Özet alınamadı.", "Tamam");
                     return;
                 }
-                // Sonucu modele işle ve UI'da göster
                 audioRecord.HasSummary = true;
                 audioRecord.SummaryText = summaryResponse.Summary.Text;
-                //audioRecord.SummaryLanguage = summaryResponse.Transcription?.Language ?? "";
                 audioRecord.SummaryConfidence = summaryResponse.Transcription?.Confidence ?? 0;
                 OnPropertyChanged(nameof(AudioRecords));
             }
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("Hata", ex.Message, "Tamam");
-                VoiceCrashLogger.Log(ex, "SummarizeAudioAsync");
+                VoiceCrashLogger.LogError(ex, "SummarizeAudioAsync");
             }
             finally
             {
@@ -739,7 +695,6 @@ namespace VoiceNotes.ViewModels
                     OnPropertyChanged(nameof(AudioRecords));
                     try
                     {
-                        // Upload kontrolü
                         if (!audioRecord.IsUploaded)
                         {
                             var uploadSuccess = await _fileUploadService.UploadAudioRecordAsync(audioRecord);
@@ -771,9 +726,8 @@ namespace VoiceNotes.ViewModels
                             await Shell.Current.DisplayAlert("Hata", $"Transkripsiyon başlatılamadı: {audioRecord.Title}", "Tamam");
                             continue;
                         }
-                        // Polling ile summary bekle
-                        SummaryResponse summaryResponse = null;
-                        for (int i = 0; i < 12; i++) // max 1 dakika bekle
+                        SummaryResponse? summaryResponse = null;
+                        for (int i = 0; i < 12; i++)
                         {
                             try
                             {
@@ -801,7 +755,6 @@ namespace VoiceNotes.ViewModels
                         audioRecord.SummaryStatus = "completed";
                         audioRecord.SummaryLanguageCode = summaryResponse.Transcription?.LanguageCode ?? "";
                         await _database.SaveAudioRecordAsync(audioRecord);
-                        // Koleksiyonu refresh et
                         var idx = AudioRecords.IndexOf(audioRecord);
                         if (idx >= 0)
                         {
@@ -815,7 +768,7 @@ namespace VoiceNotes.ViewModels
                         audioRecord.SummaryStatus = "failed";
                         await _database.SaveAudioRecordAsync(audioRecord);
                         OnPropertyChanged(nameof(AudioRecords));
-                        VoiceCrashLogger.Log(ex, "ProcessSummaryQueue");
+                        VoiceCrashLogger.LogError(ex, "ProcessSummaryQueue");
                         await Shell.Current.DisplayAlert("Hata", $"AI özet kuyruğunda hata: {audioRecord.Title}\n{ex.Message}", "Tamam");
                     }
                 }
@@ -834,7 +787,6 @@ namespace VoiceNotes.ViewModels
             {
                 if (!audio.HasSummary && (audio.SummaryStatus == "queued" || audio.SummaryStatus == "processing"))
                 {
-                    // Summary tamamlanmamışsa kuyruğa tekrar ekle
                     audio.SummaryStatus = "none";
                     await _database.SaveAudioRecordAsync(audio);
                     await QueueSummaryAsync(audio);
@@ -854,14 +806,12 @@ namespace VoiceNotes.ViewModels
         public async Task GetTranscriptAndSummaryAsync(AudioRecord audioRecord)
         {
             if (audioRecord == null) return;
-            // 1. Transcript (speech-to-text)
             var transcriptResponse = await _apiService.TranscribeAudioAsync(audioRecord.BackendAudioId);
             if (transcriptResponse != null && transcriptResponse.Success)
             {
                 audioRecord.TranscriptText = transcriptResponse.Text;
                 audioRecord.TranscriptLanguageCode = transcriptResponse.LanguageCode;
             }
-            // 2. Summary (AI özet)
             var summaryResponse = await _apiService.GetSummaryAsync(audioRecord.BackendAudioId);
             if (summaryResponse != null && summaryResponse.Success)
             {

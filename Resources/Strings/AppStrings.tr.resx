@@ -61,284 +61,284 @@
   
   <!-- App General -->
   <data name="AppTitle" xml:space="preserve">
-    <value>Voice Notes</value>
+    <value>Ses Notları</value>
   </data>
   <data name="VoiceNotes" xml:space="preserve">
-    <value>Voice Notes</value>
+    <value>Ses Notları</value>
   </data>
   <data name="TapToRecord" xml:space="preserve">
-    <value>Tap to record your thoughts</value>
+    <value>Düşüncelerinizi kaydetmek için dokunun</value>
   </data>
   
   <!-- Buttons -->
   <data name="Save" xml:space="preserve">
-    <value>Save</value>
+    <value>Kaydet</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Sil</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+    <value>Düzenle</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>İptal</value>
   </data>
   <data name="OK" xml:space="preserve">
-    <value>OK</value>
+    <value>Tamam</value>
   </data>
   <data name="Refresh" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Yenile</value>
   </data>
   <data name="Skip" xml:space="preserve">
-    <value>Skip</value>
+    <value>Atla</value>
   </data>
   <data name="Previous" xml:space="preserve">
-    <value>Previous</value>
+    <value>Önceki</value>
   </data>
   <data name="Next" xml:space="preserve">
-    <value>Next</value>
+    <value>Sonraki</value>
   </data>
   <data name="GetStarted" xml:space="preserve">
-    <value>Get Started</value>
+    <value>Başla</value>
   </data>
   
   <!-- Messages -->
   <data name="Success" xml:space="preserve">
-    <value>Success</value>
+    <value>Başarılı</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Error</value>
+    <value>Hata</value>
   </data>
   <data name="Warning" xml:space="preserve">
-    <value>Warning</value>
+    <value>Uyarı</value>
   </data>
   
   <!-- Note Operations -->
   <data name="DeleteNote" xml:space="preserve">
-    <value>Delete Note</value>
+    <value>Not Sil</value>
   </data>
   <data name="DeleteNoteConfirm" xml:space="preserve">
-    <value>Are you sure you want to delete '{0}'? This action cannot be undone.</value>
+    <value>'{0}' notunu silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</value>
   </data>
   <data name="NoteDeletedSuccess" xml:space="preserve">
-    <value>Note deleted successfully.</value>
+    <value>Not başarıyla silindi.</value>
   </data>
   <data name="NoteSavedSuccess" xml:space="preserve">
-    <value>Note saved successfully.</value>
+    <value>Not başarıyla kaydedildi.</value>
   </data>
   <data name="DeleteNoteError" xml:space="preserve">
-    <value>Failed to delete note. Please try again.</value>
+    <value>Not silinirken bir hata oluştu. Lütfen tekrar deneyin.</value>
   </data>
   <data name="SaveNoteError" xml:space="preserve">
-    <value>Failed to save note. Please try again.</value>
+    <value>Not kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.</value>
   </data>
   <data name="NoteNotFound" xml:space="preserve">
-    <value>Note not found</value>
+    <value>Not bulunamadı</value>
   </data>
   <data name="EnterNoteTitle" xml:space="preserve">
-    <value>Please enter a note title</value>
+    <value>Lütfen not başlığı girin</value>
   </data>
   <data name="NoteTitlePlaceholder" xml:space="preserve">
-    <value>Enter your note title here...</value>
+    <value>Not başlığınızı buraya girin...</value>
   </data>
   <data name="FailedToLoadNotes" xml:space="preserve">
-    <value>Failed to load notes. Please try again.</value>
+    <value>Notlar yüklenirken hata oluştu. Lütfen tekrar deneyin.</value>
   </data>
   <data name="FailedToCreateNote" xml:space="preserve">
-    <value>Failed to create new note. Please try again.</value>
+    <value>Yeni not oluşturulurken hata oluştu. Lütfen tekrar deneyin.</value>
   </data>
   <data name="FailedToOpenNote" xml:space="preserve">
-    <value>Failed to open note. Please try again.</value>
+    <value>Not açılırken hata oluştu. Lütfen tekrar deneyin.</value>
   </data>
   
   <!-- Audio Operations -->
   <data name="DeleteRecording" xml:space="preserve">
-    <value>Delete Recording</value>
+    <value>Kaydı Sil</value>
   </data>
   <data name="DeleteRecordingConfirm" xml:space="preserve">
-    <value>Are you sure you want to delete '{0}' recording?</value>
+    <value>'{0}' kaydını silmek istediğinizden emin misiniz?</value>
   </data>
   <data name="EditRecordingTitle" xml:space="preserve">
-    <value>Edit Recording Title</value>
+    <value>Kayıt Başlığını Düzenle</value>
   </data>
   <data name="EnterNewTitle" xml:space="preserve">
-    <value>Enter new title:</value>
+    <value>Yeni başlık girin:</value>
   </data>
   <data name="AudioFileNotFound" xml:space="preserve">
-    <value>Audio file not found</value>
+    <value>Ses dosyası bulunamadı</value>
   </data>
   <data name="PlayAudioError" xml:space="preserve">
-    <value>Could not play audio</value>
+    <value>Ses çalınamadı</value>
   </data>
   <data name="RecordingError" xml:space="preserve">
-    <value>Recording failed. Please try again.</value>
+    <value>Kayıt başarısız. Lütfen tekrar deneyin.</value>
   </data>
   <data name="MicrophonePermissionError" xml:space="preserve">
-    <value>Could not start recording. Please check microphone permissions.</value>
+    <value>Kayıt başlatılamadı. Lütfen mikrofon izinlerini kontrol edin.</value>
   </data>
   <data name="AudioNoteAvailable" xml:space="preserve">
-    <value>Audio note available</value>
+    <value>Ses notu mevcut</value>
   </data>
   <data name="ReadyToRecord" xml:space="preserve">
-    <value>Ready to record</value>
+    <value>Kayda hazır</value>
   </data>
   <data name="Recording" xml:space="preserve">
-    <value>Recording...</value>
+    <value>Kaydediliyor...</value>
   </data>
   <data name="RecordingSaved" xml:space="preserve">
-    <value>Recording saved successfully</value>
+    <value>Kayıt başarıyla kaydedildi</value>
   </data>
   <data name="FailedToStartRecording" xml:space="preserve">
-    <value>Failed to start recording</value>
+    <value>Kayıt başlatılamadı</value>
   </data>
   <data name="AudioClips" xml:space="preserve">
-    <value>{0} audio clips</value>
+    <value>{0} ses kaydı</value>
   </data>
   
   <!-- AI Operations -->
   <data name="AISummary" xml:space="preserve">
-    <value>AI Summary</value>
+    <value>AI Özeti</value>
   </data>
   <data name="SummarizeAudio" xml:space="preserve">
-    <value>Summarize</value>
+    <value>Özetle</value>
   </data>
   <data name="SummarizationError" xml:space="preserve">
-    <value>Could not summarize audio: {0}</value>
+    <value>Ses özetlenemedi: {0}</value>
   </data>
   <data name="SummarizationFailed" xml:space="preserve">
-    <value>Audio summarization failed. Please try again.</value>
+    <value>Ses özetleme başarısız. Lütfen tekrar deneyin.</value>
   </data>
   <data name="AIReady" xml:space="preserve">
-    <value>AI Ready</value>
+    <value>AI Hazır</value>
   </data>
   <data name="AISummariesComingSoon" xml:space="preserve">
-    <value>✨ AI-powered summaries coming soon!</value>
+    <value>✨ AI destekli özetler yakında!</value>
   </data>
   
   <!-- Empty States -->
   <data name="NoNotesYet" xml:space="preserve">
-    <value>No voice notes yet</value>
+    <value>Henüz ses notu yok</value>
   </data>
   <data name="CreateFirstNote" xml:space="preserve">
-    <value>Start recording your first note by tapping the + button below</value>
+    <value>İlk ses notunuzu oluşturmak için aşağıdaki + butonuna dokunun</value>
   </data>
   <data name="NoRecordingsYet" xml:space="preserve">
-    <value>No recordings yet</value>
+    <value>Henüz kayıt yok</value>
   </data>
   <data name="StartRecording" xml:space="preserve">
-    <value>Tap the microphone button to start your first recording</value>
+    <value>İlk kaydınızı yapmak için mikrofon butonuna dokunun</value>
   </data>
   
   <!-- Labels -->
   <data name="NoteTitle" xml:space="preserve">
-    <value>Note Title</value>
+    <value>Not Başlığı</value>
   </data>
   <data name="AudioRecordings" xml:space="preserve">
-    <value>Audio Recordings</value>
+    <value>Ses Kayıtları</value>
   </data>
   <data name="RecordingsCount" xml:space="preserve">
-    <value>{0} recordings</value>
+    <value>{0} kayıt</value>
   </data>
   <data name="Notes" xml:space="preserve">
-    <value>Notes</value>
+    <value>Notlar</value>
   </data>
   
   <!-- Welcome/Onboarding -->
   <data name="WelcomeToVoiceNotes" xml:space="preserve">
-    <value>Welcome to VoiceNotes</value>
+    <value>VoiceNotes'a Hoş Geldiniz</value>
   </data>
   <data name="CaptureThoughts" xml:space="preserve">
-    <value>Capture your thoughts with intelligent summaries</value>
+    <value>Düşüncelerinizi akıllı özetlerle kaydedin</value>
   </data>
   
   <!-- Onboarding Slides -->
   <data name="Slide1Title" xml:space="preserve">
-    <value>Record Your Thoughts</value>
+    <value>Düşüncelerinizi Kaydedin</value>
   </data>
   <data name="Slide1Subtitle" xml:space="preserve">
-    <value>High-quality audio recording</value>
+    <value>Yüksek kaliteli ses kaydı</value>
   </data>
   <data name="Slide1Description" xml:space="preserve">
-    <value>Capture your ideas instantly with crystal clear audio quality and smart features</value>
+    <value>Fikirlerinizi kristal netliğinde ses kalitesi ve akıllı özelliklerle anında kaydedin</value>
   </data>
   
   <data name="Slide2Title" xml:space="preserve">
-    <value>AI-Powered Summaries</value>
+    <value>AI Destekli Özetler</value>
   </data>
   <data name="Slide2Subtitle" xml:space="preserve">
-    <value>Intelligent content analysis</value>
+    <value>Akıllı içerik analizi</value>
   </data>
   <data name="Slide2Description" xml:space="preserve">
-    <value>Get intelligent summaries of your voice notes with advanced AI technology</value>
+    <value>Gelişmiş AI teknolojisi ile ses notlarınızın akıllı özetlerini alın</value>
   </data>
   
   <data name="Slide3Title" xml:space="preserve">
-    <value>100+ Languages</value>
+    <value>100+ Dil</value>
   </data>
   <data name="Slide3Subtitle" xml:space="preserve">
-    <value>Global language support</value>
+    <value>Küresel dil desteği</value>
   </data>
   <data name="Slide3Description" xml:space="preserve">
-    <value>Transcribe and translate your voice notes in over 100 languages worldwide</value>
+    <value>Ses notlarınızı dünya çapında 100'den fazla dilde transkript edin ve çevirin</value>
   </data>
   
   <data name="Slide4Title" xml:space="preserve">
-    <value>Access Everywhere</value>
+    <value>Her Yerden Erişim</value>
   </data>
   <data name="Slide4Subtitle" xml:space="preserve">
-    <value>Cloud synchronization</value>
+    <value>Bulut senkronizasyonu</value>
   </data>
   <data name="Slide4Description" xml:space="preserve">
-    <value>Sync your notes across all your devices and access them anywhere, anytime</value>
+    <value>Notlarınızı tüm cihazlarınızda senkronize edin ve her yerden, her zaman erişin</value>
   </data>
   
   <!-- Settings -->
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>Ayarlar</value>
   </data>
   <data name="SettingsDescription" xml:space="preserve">
-    <value>Customize your VoiceNotes experience</value>
+    <value>VoiceNotes deneyiminizi özelleştirin</value>
   </data>
   <data name="Language" xml:space="preserve">
-    <value>Language</value>
+    <value>Dil</value>
   </data>
   <data name="AudioSettings" xml:space="preserve">
-    <value>Audio Settings</value>
+    <value>Ses Ayarları</value>
   </data>
   <data name="AudioQuality" xml:space="preserve">
-    <value>Audio Quality</value>
+    <value>Ses Kalitesi</value>
   </data>
   <data name="AutoSave" xml:space="preserve">
-    <value>Auto Save</value>
+    <value>Otomatik Kaydet</value>
   </data>
   <data name="AISettings" xml:space="preserve">
-    <value>AI Settings</value>
+    <value>AI Ayarları</value>
   </data>
   <data name="AutoSummarize" xml:space="preserve">
-    <value>Auto Summarize</value>
+    <value>Otomatik Özetle</value>
   </data>
   <data name="TranslationEnabled" xml:space="preserve">
-    <value>Translation Enabled</value>
+    <value>Çeviri Aktif</value>
   </data>
   <data name="StorageSettings" xml:space="preserve">
-    <value>Storage</value>
+    <value>Depolama</value>
   </data>
   <data name="UsedSpace" xml:space="preserve">
-    <value>Used Space</value>
+    <value>Kullanılan Alan</value>
   </data>
   <data name="ClearCache" xml:space="preserve">
-    <value>Clear Cache</value>
+    <value>Önbelleği Temizle</value>
   </data>
   <data name="About" xml:space="preserve">
-    <value>About</value>
+    <value>Hakkında</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Version</value>
+    <value>Sürüm</value>
   </data>
   <data name="PrivacyPolicy" xml:space="preserve">
-    <value>Privacy Policy</value>
+    <value>Gizlilik Politikası</value>
   </data>
   <data name="TermsOfService" xml:space="preserve">
-    <value>Terms of Service</value>
+    <value>Kullanım Şartları</value>
   </data>
 </root> 
